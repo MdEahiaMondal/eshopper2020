@@ -11,7 +11,7 @@
     <section id="form" style="margin-top: 27px;"><!--form-->
         <div class="container">
             <div class="row">
-                <table class="table">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th scope="col">SI</th>
@@ -35,7 +35,7 @@
                             <td>{{ $order->grand_total }}</td>
                             <td>{{ $order->created_at->diffForHumans() }}</td>
                             <td>
-                                <a href="">View Details</a>
+                                <a href="{{ route('user.order.details',$order->id) }}">View Details</a>
                             </td>
                         </tr>
                     @endforeach

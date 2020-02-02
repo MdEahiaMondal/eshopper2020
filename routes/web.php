@@ -70,6 +70,7 @@ Route::group(['middleware' => ['frontlogin']], function (){
     Route::get('shipping/detaile/{id}','Frontend\ShippingController@ShippingDetaile')->name('shipping.detail');
     Route::post('product/order','Frontend\OrderController@Order')->name('order.store');
     Route::get('product/order/view','Frontend\OrderController@userOrderView')->name('user.order.view');
+    Route::get('product/order/details/{id}','Frontend\OrderController@userOrderDetails')->name('user.order.details');
 });
 
 Route::post('user/login','Frontend\UserController@loginChack')->name('user.login.store'); // user can see his profile

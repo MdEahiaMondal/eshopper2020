@@ -66,15 +66,11 @@ class OrderController extends Controller
       return view('frontend.pages.user_order_view', compact('orders'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function userOrderDetails($order_id)
     {
-        //
+        $order_details = Order::with('orderDetails')->where('id', $order_id)->first();
+        return view('frontend.pages.user_order_details', compact('order_details'));
     }
 
     /**
