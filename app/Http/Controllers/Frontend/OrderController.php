@@ -33,7 +33,7 @@ class OrderController extends Controller
         $data ->shipping_city = $shipping->city;
         $data ->shipping_address = $shipping->city;
         $data ->coupon_code = Session::has('couponCode') ? Session::get('couponCode'): '';
-        $data ->coupon_amount = Session::has('couponAmount') ?Session::get('couponAmount'): '';
+        $data ->coupon_amount = Session::has('couponAmount') ? Session::get('couponAmount'): 0;
         $data ->shipping_charge = $request->shipping_charge ? $request->shipping_charge : 0.00;
         $data ->status = 0;
         $data ->payment_method = $request->payment_method;
@@ -54,14 +54,16 @@ class OrderController extends Controller
             ]);
         }
 
-
+        // now we need to delete cart item
+        Cart::where('user_email', auth()->user()->email)->delete();
        return view('frontend.pages.order_thanks');
     }
 
 
-    public function create()
+    public function userOrderView()
     {
-        //
+       $orders =  Order::where('user_id', auth()->id())->get();
+      return view('frontend.pages.user_order_view', compact('orders'));
     }
 
     /**
