@@ -40,6 +40,7 @@
                 <a class="{{ preg_match("/product/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.product.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Products</span></a>
                 <a class="{{ preg_match("/coupon/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.coupon.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Coupons</span></a>
                 <a class="{{ preg_match("/banner/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.banner.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Banners</span></a>
+                <a class="{{ preg_match("/order/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.order.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Order</span></a>
             </li>
 
         </ul>

@@ -41,7 +41,21 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
     Route::resource('coupon','CouponController');
     // Banner Controller
     Route::resource('banner','BannerController');
+
+    // order
+    Route::resource('order','OrderController');
 });
+
+
+
+
+
+
+
+
+
+
+
 
 /********************************frontend controller************************/
 Route::get('/', 'Frontend\HomeController@index');

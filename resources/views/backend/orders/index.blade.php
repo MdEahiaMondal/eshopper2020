@@ -3,7 +3,7 @@
 @section('content')
      <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Examination</h2>
+            <h2>Orders</h2>
         </div>
         <div class="col-lg-2">
             <div class="ibox-tools">
@@ -22,7 +22,7 @@
                         <div class="row" style="margin-bottom: 10px">
 
                             <div class="col-sm-12">
-                                <form action="{{ route('examinations.index') }}" method="get" class="form-inline" role="form">
+                                <form action="{{ route('admin.order.index') }}" method="get" class="form-inline" role="form">
 
                                     <div class="form-group">
                                         <div>Records Per Page</div>
@@ -51,36 +51,47 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Department</th>
-                                        <th>Subject</th>
-                                        <th>Create At</th>
-                                        <th>Total Marks</th>
+                                        <th>Si</th>
+                                        <th>Order Date</th>
+                                        <th>Customer Name</th>
+                                        <th>Customer Email</th>
+                                        <th>Products</th>
+                                        <th>Order Amount</th>
+                                        <th>Payment Method</th>
+                                        <th>Status</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    @foreach($examinations as $examination)
+                                    @foreach($orders as $order)
                                         <tr>
-                                            <td>{{ ucfirst($examination->department->name) }}</td>
-                                            <td>{{ ucfirst($examination->subject->name) }}</td>
-                                             <td>{{ date_format($examination->created_at, 'd-m-Y') }}</td>
-                                            <td>{{ ucfirst($examination->total_marks) }}</td>
-                                            <td class="text-center">
 
-                                                <a href="{{ route('examinations.edit', $examination->id) }}" title="Edit" class="btn btn-info cus_btn">
-                                                    <i class="fa fa-pencil-square-o"></i> <strong>Edit</strong>
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ $order->created_at->diffForHumans() }}</td>
+                                            <td>{{ $order->orderUser->name }}</td>
+                                            <td>{{ $order->orderUser->email }}</td>
+                                            <td>
+                                                @foreach($order->orderDetails as $product_detaile)
+                                                    <span class="badge">{{ $product_detaile->product_name }}</span>
+                                                @endforeach
+                                            </td>
+                                            <td>{{ $order->grand_total }}</td>
+                                            <td>{{ $order->payment_method }}</td>
+                                            <td>{{ $order->status }}</td>
+                                            <td class="text-center">
+                                                <a href="{{ route('admin.order.show', $order->id) }}" title="Edit" class="btn btn-info cus_btn">
+                                                    <i class="fa fa-eye"></i> <strong>View</strong>
                                                 </a>
 
-                                                <a onclick="deleteRow({{ $examination->id }})" href="JavaScript:void(0)" title="Delete" class="btn btn-danger cus_btn">
+                                                <a onclick="deleteRow({{ $order->id }})" href="JavaScript:void(0)" title="Delete" class="btn btn-danger cus_btn">
                                                     <i class="fa fa-trash"></i> <strong>Delete</strong>
                                                 </a>
 
-                                                <form id="row-delete-form{{ $examination->id }}" method="POST" action="{{ route('examinations.destroy', $examination->id) }}" style="display: none" >
+                                                <form id="row-delete-form{{ $order->id }}" method="POST" action="{{ route('admin.order.destroy', $order->id) }}" style="display: none" >
                                                     @method('DELETE')
                                                     @csrf()
                                                 </form>
-
                                             </td>
                                         </tr>
                                     @endforeach
