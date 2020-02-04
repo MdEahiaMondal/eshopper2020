@@ -44,6 +44,7 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
 
     // order
     Route::resource('order','OrderController');
+    Route::post('order/status','OrderController@orderStatusUpdate')->name('order.status.update');
 });
 
 

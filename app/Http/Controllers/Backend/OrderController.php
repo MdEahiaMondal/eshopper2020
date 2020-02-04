@@ -59,4 +59,12 @@ class OrderController extends Controller
     {
         //
     }
+
+
+    public function orderStatusUpdate(Request $request)
+    {
+        Order::where('id', $request->order_id)->first()->update(['status'=> $request->status]);
+        return redirect()->back()->with('success', 'Order Status Successfully Changed');
+    }
+
 }

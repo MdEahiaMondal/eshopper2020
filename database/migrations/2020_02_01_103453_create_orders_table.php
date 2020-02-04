@@ -29,7 +29,7 @@ class CreateOrdersTable extends Migration
             $table->string('payment_method',15);
             $table->float('shipping_charge');
             $table->float('grand_total');
-            $table->boolean('status')->default(0);
+            $table->string('status')->default('new');
             $table->timestamps();
         });
     }

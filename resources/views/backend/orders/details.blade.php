@@ -84,7 +84,7 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>Shipping Details </h5>
@@ -122,6 +122,38 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-4">
+                <form action="{{ route('admin.order.status.update') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <select name="status" id="" class="form-control">
+                                    <option {{ $order->status == 'new' ? 'selected' : '' }} value="new">New</option>
+                                    <option {{ $order->status == 'pending' ? 'selected' : '' }} value="pending">Pending</option>
+                                    <option {{ $order->status == 'in process' ? 'selected' : '' }} value="in process">In Process</option>
+                                    <option {{ $order->status == 'shipped' ? 'selected' : '' }} value="shipped">Shipped</option>
+                                    <option {{ $order->status == 'delivered' ? 'selected' : '' }} value="delivered">Delivered</option>
+                                    <option {{ $order->status == 'canclled' ? 'selected' : '' }} value="canclled">Canclled</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="btn btn-sm btn-primary" type="submit">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+
 
         </div>
 
