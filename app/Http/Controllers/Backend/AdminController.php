@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Admin;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -26,8 +27,9 @@ class AdminController extends Controller
     {
         if ($request->isMethod('post'))
         {
-            if (auth()->attempt(['email' => $request->email, 'password' => $request->password, 'admin' => 1])){
-               /* Session::put('adminSession', $request->email); // after login we will  check admin or not*/
+            $admin = Admin::where(['username' => $request->username, 'password' => md5($request->password), 'status' => 1])->count();
+            if ($admin){
+                Session::put('adminSession', $request->username); // after login we will  check admin or not*/
                 return redirect()->route('admin.home')->with('success', 'Your are now login');
             }else{
                return redirect()->route('admin.login')->with('error', 'Invalide username or password');

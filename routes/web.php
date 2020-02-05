@@ -19,7 +19,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::match(['get', 'post'], '/admin', 'Backend\AdminController@login')->name('admin.login');
 
 
-Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin', 'middleware' => 'auth'], function (){
+Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin', 'middleware' => 'admin'], function (){
 
     // admin section controller
     Route::get('dashboard', 'AdminController@index')->name('home');
