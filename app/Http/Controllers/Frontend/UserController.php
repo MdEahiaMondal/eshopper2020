@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -29,6 +30,17 @@ class UserController extends Controller
         $request['password'] = bcrypt($request->pass);
 
         User::create($request->except('_token','pass'));
+
+        $messageData = [
+            'email' => $request->email,
+            'name' => $request->name,
+        ];
+        $email = $request->email;
+        // send to email
+        Mail::send('frontend.mail.register', $messageData, function ($message) use($email){
+            $message->to($email)->subject("Registration with E-Shopper-2020 Site.");
+        });
+
         if (auth()->attempt(['email' =>$request->email, 'password' => $request->pass]))
         {
             Session::put('frontendUserEmail',$request->email);
