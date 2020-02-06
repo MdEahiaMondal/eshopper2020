@@ -6,9 +6,12 @@ use App\Cart;
 use App\Order;
 use App\OrderProduct;
 use App\Shipping;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use function foo\func;
 
 class OrderController extends Controller
 {
@@ -55,8 +58,35 @@ class OrderController extends Controller
         }
 
         // now we need to delete cart item
-        Cart::where('user_email', auth()->user()->email)->delete();
-       return view('frontend.pages.order_thanks');
+//        Cart::where('user_email', auth()->user()->email)->delete();
+
+        if ($request->payment_method == 'cad')
+        {
+            //send to mail
+            $productDetails = Order::with('orderDetails')->where('id', $data->id)->first();
+            $userDetails = User::where('id', auth()->id())->first();
+
+//            dd($productDetails);
+
+            $email = auth()->user()->email;
+            $messageData = [
+                'shippingEmail' => $shipping->email,
+                'shipingName' => $shipping->name,
+                'order_id' => $data->id,
+                'productDetails' => $productDetails,
+                'userDetails' => $userDetails,
+            ];
+
+            Mail::send('frontend.mail.order_details', $messageData, function ($message) use($email){
+                $message->to($email)->subject('Your Order Details From E-Shopper-2020');
+            });
+
+
+            return view('frontend.pages.order_thanks');
+        }else{
+            return view('frontend.pages.order_thanks');
+        }
+
     }
 
 
