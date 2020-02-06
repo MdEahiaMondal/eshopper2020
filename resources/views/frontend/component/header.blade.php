@@ -118,7 +118,10 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="search_box pull-right">
-                        <input type="text" placeholder="Search"/>
+                        <form action="{{ route('product.search') }}" method="get">
+                            <input type="text" name="search_product" placeholder="Search"/>
+                            <button type="submit" style="border: 0px; height: 35px">Go</button>
+                        </form>
                     </div>
                 </div>
             </div>

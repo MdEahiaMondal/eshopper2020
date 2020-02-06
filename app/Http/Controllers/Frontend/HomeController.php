@@ -69,5 +69,15 @@ class HomeController extends Controller
     }
 
 
+    public function searchProducts(Request $request)
+    {
+        // get all category
+        $categories = Category::with('children')->where('parent_id', '=', null)->get();
+        // get search slug category
+        $products = Product::where('name', 'like', '%'.$request->search_product. '%')->orWhere('code', $request->search_product)->get();
+        $searchName = $request->search_product;
+        return view('frontend.home.home', compact('products', 'categories', 'searchName'));
+    }
+
 
 }

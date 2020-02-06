@@ -90,7 +90,12 @@
                         @if(isset($catgori))
                             <h2 class="title text-center">{{ $catgori->name }}</h2>
                             @else
-                            <h2 class="title text-center">Features Items</h2>
+                            @if(isset($searchName))
+                                <h2 class="title text-center">{{ $searchName }}</h2>
+                            @endif
+                             @if(empty($searchName) && empty($catgori))
+                                <h2 class="title text-center">Features Items</h2>
+                            @endif
                         @endif
 
                         @if($products->count() > 0)

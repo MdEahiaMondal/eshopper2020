@@ -63,6 +63,10 @@ Route::get('/', 'Frontend\HomeController@index');
 Route::get('/products/{url}', 'Frontend\HomeController@products')->name('products');
 Route::get('/product/detail/{url}', 'Frontend\HomeController@productDetail')->name('product.detail');
 Route::get('/product/price', 'Frontend\HomeController@getProductSizeWisePrice')->name('get.product.price');
+Route::get('product/search','Frontend\HomeController@searchProducts')->name('product.search');
+
+
+
 Route::resource('cart','Frontend\CartController');
 Route::get('cart/{id}/increment','Frontend\CartController@cartUpdateIncrement')->name('cart.update.icrement');
 Route::get('cart/{id}/decrement','Frontend\CartController@cartUpdateDecrement')->name('cart.update.decrement');
@@ -91,6 +95,8 @@ Route::group(['middleware' => ['frontlogin']], function (){
 Route::post('user/login','Frontend\UserController@loginChack')->name('user.login.store'); // user can see his profile
 Route::get('login-register/email/check','Frontend\UserController@loginRegisterEmailCheck')->name('check.email.exist');
 Route::get('email/confirmation/{code}','Frontend\UserController@emailConfirmation')->name('email.confirmation');
+
+
 
 
 

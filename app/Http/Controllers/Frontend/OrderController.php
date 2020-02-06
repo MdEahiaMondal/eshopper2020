@@ -58,7 +58,7 @@ class OrderController extends Controller
         }
 
         // now we need to delete cart item
-//        Cart::where('user_email', auth()->user()->email)->delete();
+        Cart::where('user_email', auth()->user()->email)->delete();
 
         if ($request->payment_method == 'cad')
         {
