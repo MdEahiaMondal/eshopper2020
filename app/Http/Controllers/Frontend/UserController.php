@@ -34,19 +34,42 @@ class UserController extends Controller
         $messageData = [
             'email' => $request->email,
             'name' => $request->name,
+            'code' => base64_encode($request->email)
         ];
         $email = $request->email;
-        // send to email
+    /*    // send to email
         Mail::send('frontend.mail.register', $messageData, function ($message) use($email){
             $message->to($email)->subject("Registration with E-Shopper-2020 Site.");
+        });*/
+
+        // send confirmation mail
+        Mail::send('frontend.mail.confirmation', $messageData, function ($message) use($email){
+            $message->to($email)->subject("Confirmation in your mail E-Shopper-2020 Site.");
         });
 
-        if (auth()->attempt(['email' =>$request->email, 'password' => $request->pass]))
+        return redirect()->back()->with('success', 'Please confirm your email');
+
+     /* if (auth()->attempt(['email' =>$request->email, 'password' => $request->pass]))
         {
             Session::put('frontendUserEmail',$request->email);
             return redirect()->route('cart.index')->with('success', 'you are now login');
         }else{
             return redirect()->back()->with('error', 'Invalid email or password');
+        }*/
+    }
+
+
+    public function emailConfirmation($email)
+    {
+        $email = base64_decode($email);
+        $check = User::where('email', $email)->first();
+        if ($check->status == 1)
+        {
+            return redirect()->route('login.register')->with('error', 'Your Account Alredy Activated!');
+        }else{
+            User::where('email', $email)->update(['status' => 1]);
+
+            return redirect()->route('login.register')->with('success', 'Your Account  Activated!. you can now login');
         }
     }
 
@@ -65,7 +88,7 @@ class UserController extends Controller
             'loginemail' => 'required|email',
         ]);
 
-        if (auth()->attempt(['email' => $request->loginemail, 'password' => $request->loginpassword]))
+        if (auth()->attempt(['email' => $request->loginemail, 'password' => $request->loginpassword, 'status' => 1]))
         {
             Session::put('frontendUserEmail',$request->loginemail);
             return redirect()->route('cart.index')->with('success', 'you are now login');

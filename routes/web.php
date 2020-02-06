@@ -90,6 +90,7 @@ Route::group(['middleware' => ['frontlogin']], function (){
 
 Route::post('user/login','Frontend\UserController@loginChack')->name('user.login.store'); // user can see his profile
 Route::get('login-register/email/check','Frontend\UserController@loginRegisterEmailCheck')->name('check.email.exist');
+Route::get('email/confirmation/{code}','Frontend\UserController@emailConfirmation')->name('email.confirmation');
 
 
 
