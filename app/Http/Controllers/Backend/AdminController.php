@@ -52,8 +52,8 @@ class AdminController extends Controller
 
     public function checkPassword(Request $request)
     {
-        $check_password = User::where('admin', 1)->first();
-        if (Hash::check($request->currentPassword,$check_password->password)){
+        $check = Admin::where(['username' => Session::get('adminSession'), 'password' => md5($request->currentPassword)])->count();
+        if ($check == 1){
             echo "true";die();
         }else{
             echo "false";die();
@@ -70,16 +70,18 @@ class AdminController extends Controller
 
         if ($request->isMethod('post'))
         {
-            $checkPassword = User::where('email', auth()->user()->email)->first();
+            $check = Admin::where(['username' => Session::get('adminSession'), 'password' => md5($request->current_password)])->count();
 
-            if (Hash::check($request->current_password, $checkPassword->password)){
-                $password = bcrypt($request->password);
-                $checkPassword->update(['password' => $password]);
+            if ($check == 1){
+
+                 Admin::where(['username' => Session::get('adminSession')])->update(['password' => md5($request->password)]);
                 return redirect()->back()->with('success', 'Password change successfully !');
             }else{
+
                 return redirect()->back()->with('error', 'Incurrect Current Password');
             }
         }else{
+
             return redirect()->back()->with('error', 'Your request is not currect');
         }
 

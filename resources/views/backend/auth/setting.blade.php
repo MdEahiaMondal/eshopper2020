@@ -39,6 +39,12 @@
                             <div class="col-sm-6 b-r"><h3 class="m-t-none m-b">Change Password</h3>
                                 <form role="form" action="{{ route('admin.password.update') }}" method="post">
                                     @csrf
+
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input type="text" readonly class="form-control" value="{{ Session::get('adminSession') }}" id="username">
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="current_password">Current Password</label>
                                         <input type="password" class="form-control" name="current_password" id="current_password">
