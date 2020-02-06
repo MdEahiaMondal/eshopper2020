@@ -34,10 +34,8 @@ class CartController extends Controller
         ]);
 
         $data = $request->all();
-        if (auth()->check()){
-            $data['user_email'] = auth()->user()->email;
-        }
 
+        // we need to setup session for gauest user
         $session_id = Session::get('session_id');
         if (empty($session_id))
         {
@@ -45,20 +43,45 @@ class CartController extends Controller
             Session::put('session_id',$session_id);
         }
 
+        // first we need to separate id and size
         if (!empty($data['productSize'])){
             $data['size'] = explode($data['product_id'].'-',$data['productSize']);
         }
 
-        // ckack the product already exist
-        $check = Cart::where([
-            'product_id' => $data['product_id'],
-            'color' => $data['color'],
-            'size' => $data['size'][1],
-            'session_id' => $session_id,
-        ])->count();
+        // we can check this product quantity is available or not
+        $producrCheck = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size'][1]])->first();
+        if ($producrCheck->stock < $request->quantity)
+        {
+            return redirect()->back()->with('error', 'Required Quantity is not available!');
+        }
 
-        if ($check){
+        // now we can check this product alredy in user cart or not
+        if (auth()->check()){
+            // ckack the product already exist using session
+            $checkCart = Cart::where([
+                'product_id' => $data['product_id'],
+                'color' => $data['color'],
+                'size' => $data['size'][1],
+                'user_email' => auth()->user()->email,
+            ])->count();
+
+        }else{
+            $checkCart = Cart::where([
+                'product_id' => $data['product_id'],
+                'color' => $data['color'],
+                'size' => $data['size'][1],
+                'session_id' => $session_id,
+            ])->count();
+        }
+
+        if ($checkCart){
             return redirect()->back()->with('error', 'Product Alredy Exist in you cart');
+        }
+
+        if (auth()->check()){
+            $data['user_email'] = auth()->user()->email;
+        }else{
+            $data['user_email'] = '';
         }
 
         $productSkuCode = ProductAttribute::select('sku')->where(['product_id' => $data['product_id'], 'size' =>$data['size'][1]])->first();

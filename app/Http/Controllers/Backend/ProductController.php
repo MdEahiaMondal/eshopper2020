@@ -137,6 +137,21 @@ class ProductController extends Controller
     }
 
 
+    public function updateProductAttributeStore(Request $request)
+    {
+        $data = $request->all();
+        foreach ($data['idAttr'] as $key => $value)
+        {
+            ProductAttribute::where('id', $value)->update([
+                'price' => $data['price'][$key],
+                'stock' => $data['stock'][$key],
+            ]);
+        }
+        return redirect()->back()->with('success', 'Product Attribute Updated Success !');
+    }
+
+
+
 
     public function ShowProductImageForm(Request $request, $id = null)
     {
@@ -170,18 +185,7 @@ class ProductController extends Controller
     }
 
 
-    public function updateProductAttributeStore(Request $request)
-    {
-        $data = $request->all();
-        foreach ($data['idAttr'] as $key => $value)
-        {
-            ProductAttribute::where('id', $value)->update([
-                'price' => $data['price'][$key],
-                'stock' => $data['stock'][$key],
-            ]);
-        }
-        return redirect()->back()->with('success', 'Product Attribute Updated Success !');
-    }
+
 
 
 
