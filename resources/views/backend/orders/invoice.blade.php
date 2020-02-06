@@ -14,19 +14,23 @@
                 <div class="col-xs-6">
                     <address>
                         <strong>Billed To:</strong><br>
-                        John Smith<br>
-                        1234 Main<br>
-                        Apt. 4B<br>
-                        Springfield, ST 54321
+                        <div>{{ $order->orderUser->name }}</div>
+                        <div>{{ $order->orderUser->email }}</div>
+                        <div>{{ $order->orderUser->phone }}</div>
+                        <div>{{ $order->orderUser->address }}</div>
                     </address>
                 </div>
                 <div class="col-xs-6 text-right">
                     <address>
                         <strong>Shipped To:</strong><br>
-                        Jane Smith<br>
-                        1234 Main<br>
-                        Apt. 4B<br>
-                        Springfield, ST 54321
+                        <div>{{ $order->shipping_name }}</div>
+                        <div>{{ $order->shipping_email }}</div>
+                        <div>{{ $order->shipping_phone }}</div>
+                        <div>{{ $order->shipping_country }}</div>
+                        <div>{{ $order->shipping_state }}</div>
+                        <div>{{ $order->shipping_city }}</div>
+                        <div>{{ $order->shipping_zipcode }}</div>
+                        <div>{{ $order->shipping_address }}</div>
                     </address>
                 </div>
             </div>
@@ -34,14 +38,13 @@
                 <div class="col-xs-6">
                     <address>
                         <strong>Payment Method:</strong><br>
-                        Visa ending **** 4242<br>
-                        jsmith@email.com
+                        <div>{{ $order->payment_method }}</div>
                     </address>
                 </div>
                 <div class="col-xs-6 text-right">
                     <address>
                         <strong>Order Date:</strong><br>
-                        March 7, 2014<br><br>
+                        <div>{{ $order->created_at->diffForHumans() }}</div>
                     </address>
                 </div>
             </div>
@@ -59,49 +62,63 @@
                         <table class="table table-condensed">
                             <thead>
                             <tr>
-                                <td><strong>Item</strong></td>
-                                <td class="text-center"><strong>Price</strong></td>
-                                <td class="text-center"><strong>Quantity</strong></td>
-                                <td class="text-right"><strong>Totals</strong></td>
+                                <th >Name</th>
+                                <th >Size</th>
+                                <th >Color </th>
+                                <th >Price</th>
+                                <th >Quantity</th>
+                                <th class="text-right">Total</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                @php
+                                    $grand_total = 0;
+                                @endphp
+                            @foreach($order->orderDetails as $product)
                             <tr>
-                                <td>BS-200</td>
-                                <td class="text-center">$10.99</td>
-                                <td class="text-center">1</td>
-                                <td class="text-right">$10.99</td>
+                                <td>{{ $product->product_name }}</td>
+                                <td>{{ $product->product_size }}</td>
+                                <td>{{ $product->product_color }}</td>
+                                <td>{{ $product->product_price }}</td>
+                                <td>{{ $product->product_quantity }}</td>
+                                <td class="text-right">{{ $product->product_price }}</td>
                             </tr>
+                                @php
+                                    $grand_total += ($product->product_quantity * $product->product_price)
+                                @endphp
+                            @endforeach
+
                             <tr>
-                                <td>BS-400</td>
-                                <td class="text-center">$20.00</td>
-                                <td class="text-center">3</td>
-                                <td class="text-right">$60.00</td>
-                            </tr>
-                            <tr>
-                                <td>BS-1000</td>
-                                <td class="text-center">$600.00</td>
-                                <td class="text-center">1</td>
-                                <td class="text-right">$600.00</td>
-                            </tr>
-                            <tr>
+                                <td class="thick-line"></td>
+                                <td class="thick-line"></td>
                                 <td class="thick-line"></td>
                                 <td class="thick-line"></td>
                                 <td class="thick-line text-center"><strong>Subtotal</strong></td>
-                                <td class="thick-line text-right">$670.99</td>
+                                <td class="thick-line text-right"><b>{{ $grand_total }}</b></td>
                             </tr>
                             <tr>
                                 <td class="no-line"></td>
                                 <td class="no-line"></td>
-                                <td class="no-line text-center"><strong>Shipping</strong></td>
-                                <td class="no-line text-right">$15</td>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
+                                <td class="no-line text-center"><strong>Shipping Charge (+)</strong></td>
+                                <td class="no-line text-right">{{ $order->shipping_charge }}</td>
                             </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>Coupon Amount (-)</strong></td>
+                                    <td class="no-line text-right">{{ $order->coupon_amount }}</td>
+                                </tr>
                             <tr>
+                                <td class="no-line"></td>
+                                <td class="no-line"></td>
                                 <td class="no-line"></td>
                                 <td class="no-line"></td>
                                 <td class="no-line text-center"><strong>Total</strong></td>
-                                <td class="no-line text-right">$685.99</td>
+                                <td class="no-line text-right">{{ $order->grand_total }}</td>
                             </tr>
                             </tbody>
                         </table>
