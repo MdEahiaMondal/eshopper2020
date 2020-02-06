@@ -18,47 +18,16 @@ class OrderController extends Controller
 
 
 
-
-
-
     public function show(Order $order)
     {
         return view('backend.orders.details', compact('order'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function orderInvoice(Order $order)
     {
-        //
+        return view('backend.orders.invoice', compact('order'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
 
     public function orderStatusUpdate(Request $request)

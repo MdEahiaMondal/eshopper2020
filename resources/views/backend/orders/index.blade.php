@@ -64,6 +64,7 @@
                                 </thead>
 
                                 <tbody>
+                                @if(isset($orders))
                                     @foreach($orders as $order)
                                         <tr>
 
@@ -83,6 +84,9 @@
                                                 <a href="{{ route('admin.order.show', $order->id) }}" title="Edit" class="btn btn-info cus_btn">
                                                     <i class="fa fa-eye"></i> <strong>View</strong>
                                                 </a>
+                                                <a href="{{ route('admin.order.invoice', $order->id) }}" title="Order Invoice" class="btn btn-info cus_btn">
+                                                    <i class="fa fa-file-invoice"></i> <strong>Invoice</strong>
+                                                </a>
 
                                                 <a onclick="deleteRow({{ $order->id }})" href="JavaScript:void(0)" title="Delete" class="btn btn-danger cus_btn">
                                                     <i class="fa fa-trash"></i> <strong>Delete</strong>
@@ -95,6 +99,7 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                @endif
                                 </tbody>
 
                             </table>
