@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Cart;
 use App\Coupon;
+use App\PostalCode;
 use App\ProductAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -104,6 +105,22 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Product add to cart success !');
     }
+
+
+    public function CheckPostCode(Request $request)
+    {
+       $checkPincode = PostalCode::where('post_code', $request->post_code)->count();
+
+       if ($checkPincode > 0)
+       {
+           return 'true';
+       }else{
+           return 'false';
+       }
+
+    }
+
+
 
 
     public function cartUpdateIncrement($id)

@@ -76,6 +76,7 @@
                                     <p><b>Condition:</b> New</p>
                                     <p><b>Brand:</b> E-SHOPPER</p>
                                     <p><b>Delevary:</b> <input name="post_code" required id="post_code" type="text"><button onclick="checkPostCode()" type="button">Go</button></p>
+                                    <div id="resultcode"></div>
                                     <a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
                                 </div><!--/product-information-->
                             </form>
@@ -228,7 +229,30 @@
         // check post code
         function checkPostCode() {
             var post_code = $("#post_code").val();
-            alert(post_code)
+            if(post_code == '')
+            {
+                alert('Please enter your postal code')
+            }
+
+            $.ajax({
+                url: "{{ route('check.postal_code') }}",
+                type: "post",
+                data: {
+                    post_code: post_code,
+                },
+                success: function (res) {
+                    if (res == 'true')
+                    {
+                        $("#resultcode").html("<p style='color: mediumseagreen'>This code is available</p>")
+                    }else{
+                        $("#resultcode").html("<p style='color: crimson'>This code is not available</p>")
+                    }
+                },
+                error: function (res) {
+                    alert('Error')
+                }
+
+            })
         }
 
 

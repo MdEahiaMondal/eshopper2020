@@ -80,6 +80,7 @@ Route::resource('cart','Frontend\CartController');
 Route::get('cart/{id}/increment','Frontend\CartController@cartUpdateIncrement')->name('cart.update.icrement');
 Route::get('cart/{id}/decrement','Frontend\CartController@cartUpdateDecrement')->name('cart.update.decrement');
 Route::post('cart/applay/coupon','Frontend\CartController@cartApplayCoupon')->name('cart.applay.coupon');
+Route::post('check/post-code','Frontend\CartController@CheckPostCode')->name('check.postal_code');
 
 // UserController for login register system for customer
 Route::get('login-register','Frontend\UserController@loginRegisterFormShow')->name('login.register'); // show login and register form

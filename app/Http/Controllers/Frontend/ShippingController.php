@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Cart;
 use App\Country;
+use App\PostalCode;
 use App\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -34,8 +35,19 @@ class ShippingController extends Controller
            'zipcode' => 'required',
        ]);
 
+
+
        $check  = Shipping::where('user_id', auth()->id())->first();
         $request['user_id'] = auth()->id();
+
+
+        $checkPincode = PostalCode::where('post_code', $request->zipcode)->count();
+
+        if ($checkPincode  == 0)
+        {
+            return redirect()->back()->with('error', 'Please enter your valid pincode or post code!');
+        }
+
 
 
        if (isset($check))
