@@ -46,6 +46,10 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
     Route::resource('order','OrderController');
     Route::post('order/status','OrderController@orderStatusUpdate')->name('order.status.update');
     Route::get('order/{order}/invoice','OrderController@orderInvoice')->name('order.invoice');
+
+    // cms pages
+    Route::resource('cms_page','CmsPageController');
+
 });
 
 
@@ -65,7 +69,11 @@ Route::get('/products/{url}', 'Frontend\HomeController@products')->name('product
 Route::get('/product/detail/{url}', 'Frontend\HomeController@productDetail')->name('product.detail');
 Route::get('/product/price', 'Frontend\HomeController@getProductSizeWisePrice')->name('get.product.price');
 Route::get('product/search','Frontend\HomeController@searchProducts')->name('product.search');
-
+// cmsPages
+Route::get('pages/{url}','Frontend\HomeController@cmsPages');
+// contact us
+Route::get('contact-us','Frontend\HomeController@ContactUs')->name('contact.use');
+Route::post('contact-us','Frontend\HomeController@ContactUsSend')->name('contact.us.send');
 
 
 Route::resource('cart','Frontend\CartController');

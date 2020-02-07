@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Category;
+use App\CmsPage;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\ProductAttribute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -78,6 +80,49 @@ class HomeController extends Controller
         $searchName = $request->search_product;
         return view('frontend.home.home', compact('products', 'categories', 'searchName'));
     }
+
+
+    public function cmsPages($url)
+    {
+
+        $check = CmsPage::where('slug', $url)->count();
+        if ($check > 0)
+        {
+            $categories = Category::with('children')->where('parent_id', '=', null)->get();
+            $cms = CmsPage::where('slug', $url)->first();
+            return view('frontend.pages.cms_pages', compact('cms', 'categories'));
+        }else{
+            return view('errors.403');
+        }
+
+    }
+
+
+    public function ContactUs()
+    {
+        return view('frontend.pages.contact_us');
+    }
+
+
+
+    public function ContactUsSend(Request $request)
+    {
+        // send to eknojorbd88@gmail.com
+        $email = "eknojorbd88@gmail.com";
+        $messateData = [
+            'email' => $request->email,
+            'name' => $request->name,
+            'subject' => $request->subject,
+            'comment' => $request->message,
+        ];
+
+        Mail::send('frontend.mail.contact_us', $messateData, function ($message) use($email){
+            $message->to($email)->subject('Enquiry from  E-shopper-2020');
+        });
+
+        return redirect()->back()->with('success', 'Your enquiry is successfully send!');
+    }
+
 
 
 }
