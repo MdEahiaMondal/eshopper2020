@@ -51,7 +51,7 @@
                                     <input type="hidden" name="color" id="" value="{{ $product->color }}">
                                     <input type="hidden" name="price" id="productPrice" value="{{ $product->price }}">
                                     <p>Code: {{ $product->code }}</p>
-                                    <select name="productSize" id="idSize" style="width: 120px">
+                                    <select name="productSize" required id="idSize" style="width: 120px">
                                         <option value="">Select Size</option>
                                         @foreach($product->attributes as $attribute)
                                             <option value="{{ $product->id }}-{{ $attribute->size }}">{{ $attribute->size }}</option>
@@ -75,6 +75,7 @@
                                     <p><b>Availability:</b> <span id="outOfStock">@if($product_stock > 0) <label style="color: green">In Stock</label> @else <label style="color: red"> Out of Stock</label>  @endif</span> </p>
                                     <p><b>Condition:</b> New</p>
                                     <p><b>Brand:</b> E-SHOPPER</p>
+                                    <p><b>Delevary:</b> <input name="post_code" required id="post_code" type="text"><button onclick="checkPostCode()" type="button">Go</button></p>
                                     <a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
                                 </div><!--/product-information-->
                             </form>
@@ -222,6 +223,15 @@
                 $("#mainImage").attr('src',imglink)
             });
         });
+
+
+        // check post code
+        function checkPostCode() {
+            var post_code = $("#post_code").val();
+            alert(post_code)
+        }
+
+
     </script>
 
 @endpush

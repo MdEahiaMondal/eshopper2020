@@ -107,6 +107,14 @@ class HomeController extends Controller
 
     public function ContactUsSend(Request $request)
     {
+
+        $request->validate([
+           'email' => 'required',
+           'name' => 'required',
+           'subject' => 'required',
+           'message' => 'required',
+        ]);
+
         // send to eknojorbd88@gmail.com
         $email = "eknojorbd88@gmail.com";
         $messateData = [

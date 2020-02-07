@@ -21,15 +21,19 @@
                             @csrf
                             <div class="form-group col-md-6">
                                 <input type="text" name="name" class="form-control" required="required" placeholder="Name">
+                                @error('name') <span class="help-block m-b-none text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="form-group col-md-6">
                                 <input type="email" name="email" class="form-control" required="required" placeholder="Email">
+                                @error('email') <span class="help-block m-b-none text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="form-group col-md-12">
                                 <input type="text" name="subject" class="form-control" required="required" placeholder="Subject">
+                                @error('subject') <span class="help-block m-b-none text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="form-group col-md-12">
                                 <textarea name="message" id="message" required="required" class="form-control" rows="8" placeholder="Your Message Here"></textarea>
+                                @error('message') <span class="help-block m-b-none text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="form-group col-md-12">
                                 <input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
