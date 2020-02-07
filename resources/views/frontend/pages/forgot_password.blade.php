@@ -20,18 +20,13 @@
             <div class="row">
                 <div class="col-sm-4 col-sm-offset-1">
                     <div class="login-form"><!--login form-->
-                        <h2>Login to your account</h2>
-                        <form action="{{ route('user.login.store') }}" id="loginForm" name="loginForm" method="post">
+                        <h2>Forgot Password</h2>
+                        <form action="{{ route('user.forgot.password.check') }}" id="forgotPassword" name="forgotPassword" method="post">
                             @csrf
-                            <input type="email" name="loginemail" placeholder="Email Address"/>
-                            @error('loginemail')<p class="text-danger">{{ $message }}</p>@enderror
-                            <input type="password" id="Password" name="loginpassword" placeholder="Password"/>
-                            @error('loginpassword')<p class="text-danger">{{ $message }}</p>@enderror
-                            <button type="submit" class="btn btn-default">Login</button>
-                            <br>
-                            <a  href="{{ route('user.forgot.password') }}">Forgot Password</a>
+                            <input type="email" name="forgotemail" placeholder="Email Address"/>
+                            @error('forgotemail')<p class="text-danger">{{ $message }}</p>@enderror
+                            <button type="submit" class="btn btn-default">Send</button>
                         </form>
-
                     </div><!--/login form-->
                 </div>
                 <div class="col-sm-1">
@@ -76,8 +71,8 @@
                         minlength:8,
                     },
                     email:{
-                      required:true,
-                      email: true,
+                        required:true,
+                        email: true,
                         remote: {
                             url: "{{ route('check.email.exist') }}",
                             type: "get"
@@ -85,14 +80,14 @@
                     },
                 },
                 messages:{
-                  name:{
-                      required: "please Enter your name",
-                      minlength: "Your name must be atleast 3 characters long",
-                      lettersonly: "Your name must contain only letter",
-                  },
+                    name:{
+                        required: "please Enter your name",
+                        minlength: "Your name must be atleast 3 characters long",
+                        lettersonly: "Your name must contain only letter",
+                    },
                     password: {
-                      required: "Please provide your password",
-                      minlength: "your password must be atleast 8 characters long",
+                        required: "Please provide your password",
+                        minlength: "your password must be atleast 8 characters long",
                     },
                     email:{
                         required: "Please provide your Email",

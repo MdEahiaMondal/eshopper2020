@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -96,6 +97,42 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Invalid email or password');
         }
     }
+
+
+    public function ForgotPassword()
+    {
+        return view('frontend.pages.forgot_password');
+    }
+
+    public function ForgotPasswordCheck(Request $request)
+    {
+
+        $userCount = User::where('email', $request->forgotemail)->count();
+        if ($userCount == 0)
+        {
+            return redirect()->back()->with('error', 'Email is not valid !');
+        }
+        $genarateNewPassword = Str::random(8);
+        $makeBsrypt = bcrypt($genarateNewPassword);
+
+       $user =  User::where('email', $request->forgotemail)->first();
+        User::where('email', $request->forgotemail)->update(['password' => $makeBsrypt]);
+
+        $email = $request->forgotemail;
+        $messageData = [
+            'email' => $email,
+            'password' => $genarateNewPassword,
+            'name' => $user->name
+        ];
+
+        // send message to email
+        Mail::send('frontend.mail.forgot_password', $messageData, function ($message) use($email){
+            $message->to($email)->subject('Forgot password from E-Shoopper-2020');
+        });
+
+        return redirect()->route('login.register')->with('success', 'Your password has been change. please check your email to login');
+    }
+
 
     public function userProfileShow()
     {
