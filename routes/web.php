@@ -49,6 +49,7 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
 
     // cms pages
     Route::resource('cms_page','CmsPageController');
+    Route::resource('currencie','CurrencieController');
 
 });
 
