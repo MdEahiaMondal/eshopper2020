@@ -71,7 +71,18 @@
 										Add to cart
 									    </button>
                                         @endif
-								</span>
+								    </span>
+
+                                    @php
+                                    use App\Product;
+                                        $getCurrancyRate = Product::getCurrencyRates($product->price)
+                                    @endphp
+                                    <div id="currencies">
+                                        <h2> USD: {{ $getCurrancyRate['usdRate']  }} <h2>
+                                        <h2> EUR: {{ $getCurrancyRate['eurRate']  }} </h2>
+                                        <h2> INR: {{ $getCurrancyRate['inrRate']  }} </h2>
+                                    </div>
+
                                     <p><b>Availability:</b> <span id="outOfStock">@if($product_stock > 0) <label style="color: green">In Stock</label> @else <label style="color: red"> Out of Stock</label>  @endif</span> </p>
                                     <p><b>Condition:</b> New</p>
                                     <p><b>Brand:</b> E-SHOPPER</p>
@@ -205,6 +216,12 @@
                         url: "{{ route('get.product.price') }}",
                         data:{idSize:idSize},
                         success:function (res) {
+                            $("#currencies").html(
+                                '<h2> USD: '+res[2]['usdRate']+' <h2>\n' +
+                                '<h2> USD: '+res[2]['eurRate']+' <h2>\n' +
+                                '<h2> USD: '+res[2]['inrRate']+' <h2>\n'
+                            );
+                            console.log(res[2]['usdRate']);
                             if(res[1] == 0){
                                 $("#outOfStock").html("<label style='color: red'>Out of Stock</label>");
                                 $("#addToCart").hide();

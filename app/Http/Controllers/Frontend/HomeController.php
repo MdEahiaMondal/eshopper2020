@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Category;
 use App\CmsPage;
+use App\Currencie;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\ProductAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -67,7 +69,8 @@ class HomeController extends Controller
         $data = $request->all();
         $finalData = explode("-",$data['idSize']);
         $sendData =  ProductAttribute::where(['product_id' => $finalData[0], 'size' => $finalData[1]])->first();
-        return response()->json([$sendData->price, $sendData->stock]);
+        $getCurrencies = Product::getCurrencyRates($sendData->price);
+        return response()->json([$sendData->price, $sendData->stock, $getCurrencies]);
     }
 
 

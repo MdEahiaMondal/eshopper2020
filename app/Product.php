@@ -42,5 +42,33 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public static function getCurrencyRates($price)
+    {
+        $getCurrencies = Currencie::all();
+
+        foreach ($getCurrencies as $currency)
+        {
+            if (trim(strtolower($currency->currency_code) == 'usd'))
+            {
+                $usdRate = round($price/$currency->exchange_rate, 2);
+
+            }elseif (trim(strtolower($currency->currency_code) == 'eur'))
+            {
+                $eurRate = round($price/$currency->exchange_rate, 2);
+
+            }elseif (trim(strtolower($currency->currency_code) == 'inr'))
+            {
+                $inrRate = round($price/$currency->exchange_rate, 2);
+            }
+        }
+
+        $currenciesArr = [
+            'usdRate' => $usdRate,
+            'eurRate' => $eurRate,
+            'inrRate' => $inrRate,
+        ];
+        return $currenciesArr;
+    }
+
 
 }
