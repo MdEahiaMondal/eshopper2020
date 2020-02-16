@@ -127,7 +127,7 @@
                                 </div>
                             @endforeach
                             @else
-                            <div class="alert alert-warning fade in">
+                            <div class="alert alert-warning fade in text-center">
                                 <a href="#" data-dismiss="alert" class="close">×</a>
                                 <strong>Warning!</strong> Product not found.
                             </div>

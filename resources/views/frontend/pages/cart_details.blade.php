@@ -150,7 +150,7 @@
                                 <li>Coupon Amount <span>TK {{ Session::get('couponAmount') }}</span></li>
                                 <li>Grand Total <span>TK {{ $subtotal - Session::get('couponAmount') }}</span></li>
                                 @else
-                                <li>Grand Total <span>TK {{ $subtotal }}</span></li>
+                                <li>Grand Total <span class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">TK {{ $subtotal }}</span></li>
                             @endif
                         </ul>
                         <a class="btn btn-default update" href="{{ url('/') }}">Continue Shopping</a>
@@ -167,5 +167,4 @@
 
 
 @push('script')
-
 @endpush

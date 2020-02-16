@@ -78,8 +78,12 @@ class HomeController extends Controller
     {
         // get all category
         $categories = Category::with('children')->where('parent_id', '=', null)->get();
+        $searchText = $request->search_product;
         // get search slug category
-        $products = Product::where('name', 'like', '%'.$request->search_product. '%')->orWhere('code', $request->search_product)->get();
+//        $products = Product::where('name', 'like', '%'.$request->search_product. '%')->orWhere('code', $request->search_product)->get();
+        $products = Product::where(function ($query) use($searchText){
+            $query->where('name', 'like', '%'.$searchText. '%')->orWhere('code', $searchText)->orWhere('details', $searchText);
+        })->get();
         $searchName = $request->search_product;
         return view('frontend.home.home', compact('products', 'categories', 'searchName'));
     }

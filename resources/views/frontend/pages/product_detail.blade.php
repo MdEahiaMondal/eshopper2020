@@ -221,7 +221,6 @@
                                 '<h2> USD: '+res[2]['eurRate']+' <h2>\n' +
                                 '<h2> USD: '+res[2]['inrRate']+' <h2>\n'
                             );
-                            console.log(res[2]['usdRate']);
                             if(res[1] == 0){
                                 $("#outOfStock").html("<label style='color: red'>Out of Stock</label>");
                                 $("#addToCart").hide();
