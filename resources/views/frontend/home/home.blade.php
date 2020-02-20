@@ -79,11 +79,7 @@
     <section>
         <div class="container">
             <div class="row">
-
-
                 @include('frontend.component.sidebar')
-
-
                 <div class="col-sm-9 padding-right">
                     <div class="features_items"><!--features_items-->
 

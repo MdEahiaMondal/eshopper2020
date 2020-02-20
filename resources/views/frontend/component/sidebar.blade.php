@@ -1,5 +1,6 @@
 @php
     $categories = App\Category::with('children')->where('parent_id', '=', null)->get();
+    $colors = \App\Product::distinct('color')->pluck('color');
 @endphp
 
 <div class="col-sm-3">
@@ -44,6 +45,27 @@
                 </ul>
             </div>
         </div><!--/brands_products-->
+
+        @php
+            $colorArr = request('colorFilter');
+        @endphp
+
+        <form action="{{ route('product.color.filter') }}" method="get">
+            <div class="brands_products"><!--color filter-->
+                <h2>Color</h2>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @foreach($colors as $color)
+                            <div class="checkbox">
+                                <input type="checkbox" @if(!empty($colorArr) && in_array($color, $colorArr)) checked @endif id="{{ $color }}" onchange="javascript:this.form.submit();" name="colorFilter[]" value="{{ $color }}">
+                                <label style="color: {{ $color }}" for="{{ $color }}">{{ $color }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div><!--/end color filter-->
+
+        </form>
 
         <div class="price-range"><!--price-range-->
             <h2>Price Range</h2>

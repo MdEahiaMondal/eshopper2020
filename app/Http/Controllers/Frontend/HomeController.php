@@ -10,6 +10,7 @@ use App\Product;
 use App\ProductAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 
 class HomeController extends Controller
@@ -24,7 +25,7 @@ class HomeController extends Controller
     }
 
 
-    public function products($url)
+    public function products($url = null)
     {
         // if url slug is not match our recoud show 404 page
         $chack = Category::where('slug', $url)->count();
@@ -87,6 +88,22 @@ class HomeController extends Controller
         $searchName = $request->search_product;
         return view('frontend.home.home', compact('products', 'categories', 'searchName'));
     }
+
+
+    public function searchProductsWithColor(Request $request)
+    {
+        if (!empty($request->colorFilter)) // if not empty color array
+        {
+            $products = Product::whereIn('color',$request->colorFilter)->get();
+            // get all category
+            $categories = Category::with('children')->where('parent_id', '=', null)->get();
+            return view('frontend.home.home', compact('products', 'categories'));
+        }else
+            {
+                return redirect('/');
+            }
+    }
+
 
 
     public function cmsPages($url)

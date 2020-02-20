@@ -70,6 +70,7 @@ Route::get('/products/{url}', 'Frontend\HomeController@products')->name('product
 Route::get('/product/detail/{url}', 'Frontend\HomeController@productDetail')->name('product.detail');
 Route::get('/product/price', 'Frontend\HomeController@getProductSizeWisePrice')->name('get.product.price');
 Route::get('product/search','Frontend\HomeController@searchProducts')->name('product.search');
+Route::get('product/color/filter','Frontend\HomeController@searchProductsWithColor')->name('product.color.filter');
 // cmsPages
 Route::get('pages/{url}','Frontend\HomeController@cmsPages');
 // contact us
