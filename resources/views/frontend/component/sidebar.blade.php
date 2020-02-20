@@ -1,6 +1,9 @@
 @php
+    use Illuminate\Support\Arr;
     $categories = App\Category::with('children')->where('parent_id', '=', null)->get();
     $colors = \App\Product::distinct('color')->pluck('color');
+    $sizesArr = \App\ProductAttribute::distinct('size')->pluck('size');
+
 @endphp
 
 <div class="col-sm-3">
@@ -48,6 +51,7 @@
 
         @php
             $colorArr = explode('-', request('color'));
+            $sizeArr = explode('-', request('size'));
         @endphp
 
         <form action="{{ route('product.color.filter') }}" method="get">
@@ -65,6 +69,19 @@
                 </div>
             </div><!--/end color filter-->
 
+            <div class="brands_products"><!--color filter-->
+                <h2>Size</h2>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @foreach($sizesArr as $size)
+                            <div class="checkbox">
+                                <input type="checkbox"  @if(!empty($sizeArr) && in_array($size, $sizeArr)) checked @endif id="{{ $size }}" onchange="javascript:this.form.submit();" name="sizeFilter[]" value="{{ $size }}">
+                                <label for="{{ $size }}">{{ $size }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div><!--/end color filter-->
         </form>
 
         <div class="price-range"><!--price-range-->

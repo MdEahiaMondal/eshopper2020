@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Product;
 use App\ProductAttribute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
@@ -92,6 +93,13 @@ class HomeController extends Controller
 
     public function searchProductsWithColor(Request $request)
     {
+
+
+        if ($request->all() == null)
+        {
+            return \redirect('/');
+        }
+
         $colorUrl = '';
         if (!empty($request->colorFilter)) // if not empty color array
         {
@@ -99,15 +107,31 @@ class HomeController extends Controller
             {
                 if (empty($colorUrl))
                 {
-                    $colorUrl .= "color=".$color;
+                    $colorUrl .= "&color=".$color;
                 }else{
                     $colorUrl .= "-".$color;
                 }
             }
+
             $finalUrl = 'products/filter/search'."?".$colorUrl;
             return redirect($finalUrl);
-        }else{
-            return redirect('/');
+        }
+
+        $sizerUrl = '';
+        if (!empty($request->sizeFilter))
+        {
+            foreach ($request->sizeFilter as $size)
+            {
+                if (empty($sizerUrl))
+                {
+                    $sizerUrl .= "&size=".$size;
+                }else{
+                    $sizerUrl .= "-".$size;
+                }
+            }
+
+            $finalUrl = 'products/size/search'."?".$sizerUrl;
+            return redirect($finalUrl);
         }
     }
 
@@ -115,7 +139,26 @@ class HomeController extends Controller
     public function searchColorProduct(Request $request)
     {
         $colorArr = explode('-', $request->color);
-        $products = Product::whereIn('color',$colorArr)->get();
+           if (!empty($colorArr))
+        {
+            $products = Product::whereIn('color',$colorArr)->get();
+        }
+        // get all category
+        $categories = Category::with('children')->where('parent_id', '=', null)->get();
+        return view('frontend.home.home', compact('products', 'categories'));
+    }
+
+    public function searchSizeProduct(Request $request)
+    {
+        $sizeArr = explode('-', $request->size);
+        if (!empty($sizeArr))
+            {
+                $products =  DB::table('products')->join('product_attributes','products.id','=','product_attributes.product_id')
+                    ->select('products.*', 'product_attributes.product_id', 'product_attributes.size')
+                    ->whereIn('product_attributes.size', $sizeArr)->get();
+
+            }
+        dd($products);
         // get all category
         $categories = Category::with('children')->where('parent_id', '=', null)->get();
         return view('frontend.home.home', compact('products', 'categories'));
