@@ -29,7 +29,7 @@ class UserController extends Controller
             'email' => 'required|unique:users,email',
         ]);
         $request['password'] = bcrypt($request->pass);
-
+            date_default_timezone_get('Asia/Dhaka');
         User::create($request->except('_token','pass'));
 
         $messageData = [
