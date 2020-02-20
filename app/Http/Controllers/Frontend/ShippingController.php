@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Cart;
 use App\Country;
 use App\PostalCode;
+use App\Product;
 use App\Shipping;
 use App\ShippingCharge;
 use Illuminate\Http\Request;
@@ -35,9 +36,38 @@ class ShippingController extends Controller
            'phone' => 'required',
            'zipcode' => 'required',
        ]);
+
+       $carts = Cart::where('user_email', auth()->user()->email)->get('product_id');
+       $total_weight = 0;
+       foreach ($carts as $product)
+       {
+           $product_wit = Product::where('id', $product->product_id)->first()->weight;
+           $total_weight += $product_wit;
+       }
+
        Session::forget('shipping_charge');
-       $country_wise_charge = ShippingCharge::where('country', $request->country)->first()->shipping_charge;
-        Session::put('shipping_charge', $country_wise_charge);
+       $country_wise_charge = ShippingCharge::where('country', $request->country)->first();
+       $total_shipping_charge = 0;
+       if ($country_wise_charge)
+       {
+           if ($total_weight > 0 && $total_weight <= 500)
+           {
+               $total_shipping_charge = $country_wise_charge->shipping_charge_0_500g;
+           }
+           if ($total_weight >= 501 && $total_weight <= 1000)
+           {
+               $total_shipping_charge = $country_wise_charge->shipping_charge_501_1000g;
+           }
+           if ($total_weight >= 1001 && $total_weight <= 2000)
+           {
+               $total_shipping_charge = $country_wise_charge->shipping_charge_1001_2000g;
+           }
+           if ($total_weight >= 2001 && $total_weight <= 5000)
+           {
+               $total_shipping_charge = $country_wise_charge->shipping_charge_2001_5000g;
+           }
+       }
+        Session::put('shipping_charge', $total_shipping_charge);
        $check  = Shipping::where('user_id', auth()->id())->first();
         $request['user_id'] = auth()->id();
 

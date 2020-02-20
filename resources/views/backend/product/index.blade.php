@@ -54,6 +54,8 @@
                                         <th>Si</th>
                                         <th>Name</th>
                                         <th>Category</th>
+                                        <th>Weight (g)</th>
+                                        <th>Price</th>
                                         <th>Status</th>
                                         <th>Create At</th>
                                         <th class="text-center">Actions</th>
@@ -67,6 +69,8 @@
                                             <td>{{$loop->index + 1 }}</td>
                                             <td>{{ ucfirst($product->name) }}</td>
                                             <td>{{ isset($product->productCategory) ? $product->productCategory->name : 'N/A' }}</td>
+                                             <td>{{ $product->weight }}</td>
+                                             <td>{{ $product->price }}</td>
                                              <td>{{ $product->status }}</td>
                                             <td>{{ $product->created_at->diffForhumans() }}</td>
                                             <td class="text-center">

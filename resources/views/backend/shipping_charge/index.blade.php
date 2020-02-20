@@ -54,7 +54,11 @@
                                     <th>Si</th>
                                     <th>Country</th>
                                     <th>Shipping Charge</th>
-                                    <th>Status</th>
+                                    <th>Shipping  (0-500g)</th>
+                                    <th>Shipping  (501-1000g)</th>
+                                    <th>Shipping  (1001-2000g)</th>
+                                    <th>Shipping  (2001-5000g)</th>
+                                    <th width="100">Status</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
                                 </thead>
@@ -66,8 +70,12 @@
                                         <td>{{$loop->index + 1 }}</td>
                                         <td>{{ $shipping_charge->country }}</td>
                                         <td>{{ $shipping_charge->shipping_charge }}</td>
+                                        <td>{{ $shipping_charge->shipping_charge_0_500g }}</td>
+                                        <td>{{ $shipping_charge->shipping_charge_501_1000g }}</td>
+                                        <td>{{ $shipping_charge->shipping_charge_1001_2000g }}</td>
+                                        <td>{{ $shipping_charge->shipping_charge_2001_5000g }}</td>
                                         <td>{{ $shipping_charge->status }}</td>
-                                        <td class="text-center">
+                                        <td class="text-center" width="200">
                                             <a href="{{ route('admin.shipping_charge.edit', $shipping_charge->id) }}" title="Edit" class="btn btn-info cus_btn">
                                                 <i class="fa fa-pencil-square-o"></i> <strong>Edit</strong>
                                             </a>

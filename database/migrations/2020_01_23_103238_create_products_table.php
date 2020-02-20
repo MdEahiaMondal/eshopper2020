@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->string('color');
             $table->longText('details');
             $table->longText('care');
+            $table->integer('weight')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

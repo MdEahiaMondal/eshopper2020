@@ -93,6 +93,12 @@
          @error('code') <span class="help-block m-b-none text-danger">{{ $message }}</span> @enderror
      </div>
  </div>
+ <div class="form-group"><label class="col-lg-2 control-label">Weight (g)</label>
+     <div class="col-lg-6">
+         <input type="text" name="weight" class="form-control" value="{{ isset($product->weight) ? $product->weight : old('weight') }}">
+         @error('weight') <span class="help-block m-b-none text-danger">{{ $message }}</span> @enderror
+     </div>
+ </div>
 
 
 <div class="form-group">
