@@ -158,7 +158,6 @@ class HomeController extends Controller
                     ->whereIn('product_attributes.size', $sizeArr)->get();
 
             }
-        dd($products);
         // get all category
         $categories = Category::with('children')->where('parent_id', '=', null)->get();
         return view('frontend.home.home', compact('products', 'categories'));
