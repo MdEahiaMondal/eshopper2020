@@ -92,16 +92,33 @@ class HomeController extends Controller
 
     public function searchProductsWithColor(Request $request)
     {
+        $colorUrl = '';
         if (!empty($request->colorFilter)) // if not empty color array
         {
-            $products = Product::whereIn('color',$request->colorFilter)->get();
-            // get all category
-            $categories = Category::with('children')->where('parent_id', '=', null)->get();
-            return view('frontend.home.home', compact('products', 'categories'));
-        }else
+            foreach ($request->colorFilter as $color)
             {
-                return redirect('/');
+                if (empty($colorUrl))
+                {
+                    $colorUrl .= "color=".$color;
+                }else{
+                    $colorUrl .= "-".$color;
+                }
             }
+            $finalUrl = 'products/filter/search'."?".$colorUrl;
+            return redirect($finalUrl);
+        }else{
+            return redirect('/');
+        }
+    }
+
+
+    public function searchColorProduct(Request $request)
+    {
+        $colorArr = explode('-', $request->color);
+        $products = Product::whereIn('color',$colorArr)->get();
+        // get all category
+        $categories = Category::with('children')->where('parent_id', '=', null)->get();
+        return view('frontend.home.home', compact('products', 'categories'));
     }
 
 

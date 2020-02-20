@@ -47,7 +47,7 @@
         </div><!--/brands_products-->
 
         @php
-            $colorArr = request('colorFilter');
+            $colorArr = explode('-', request('color'));
         @endphp
 
         <form action="{{ route('product.color.filter') }}" method="get">

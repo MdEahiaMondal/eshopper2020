@@ -71,6 +71,7 @@ Route::get('/product/detail/{url}', 'Frontend\HomeController@productDetail')->na
 Route::get('/product/price', 'Frontend\HomeController@getProductSizeWisePrice')->name('get.product.price');
 Route::get('product/search','Frontend\HomeController@searchProducts')->name('product.search');
 Route::get('product/color/filter','Frontend\HomeController@searchProductsWithColor')->name('product.color.filter');
+Route::get('products/filter/search','Frontend\HomeController@searchColorProduct');
 // cmsPages
 Route::get('pages/{url}','Frontend\HomeController@cmsPages');
 // contact us
