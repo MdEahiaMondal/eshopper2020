@@ -51,6 +51,9 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
     Route::resource('cms_page','CmsPageController');
     Route::resource('currencie','CurrencieController');
 
+    // shipping charge
+    Route::resource('shipping_charge','ShippingChargeController');
+
 });
 
 

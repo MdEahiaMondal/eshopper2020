@@ -43,6 +43,7 @@
                 <a class="{{ preg_match("/order/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.order.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Order</span></a>
                 <a class="{{ preg_match("/cms_page/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.cms_page.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Cms Page</span></a>
                 <a class="{{ preg_match("/currencie/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.currencie.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Currency</span></a>
+                <a class="{{ preg_match("/shipping_charge/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.shipping_charge.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Shipping Charge</span></a>
             </li>
 
         </ul>

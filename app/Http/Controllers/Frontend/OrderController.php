@@ -33,11 +33,13 @@ class OrderController extends Controller
             $checkAttributeExistOrNot = ProductAttribute::where(['product_id'=> $cart->product_id, 'size' => $cart->size])->first();
 
 
+            // product attribute is available or not
             if (!$checkAttributeExistOrNot) // if it is null
             {
                 Product::deleteCartProduct($cart->product_id, auth()->user()->email);
                 return redirect()->back()->with('warning', ''.$cart->product_name.' is removed. Please try again');
             }
+
             //out of stock
             if ($checkAttributeExistOrNot->stock == 0)
             {
@@ -57,6 +59,15 @@ class OrderController extends Controller
                 Product::deleteCartProduct($cart->product_id, auth()->user()->email);
                 return redirect()->back()->with('warning', 'Disable product is removed, Please try again');
             }
+
+            // product category status is not enable
+            $categoryStatus = Product::where('id', $cart->product_id)->first();
+            if ($categoryStatus->productCategory->status == 0)
+            {
+                Product::deleteCartProduct($cart->product_id, auth()->user()->email);
+                return redirect()->back()->with('warning', 'Disable Product Category is removed, Please try again');
+            }
+
         }
 
         $data = new Order();

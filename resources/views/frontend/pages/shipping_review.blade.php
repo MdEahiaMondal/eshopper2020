@@ -193,9 +193,11 @@
                             @if(!empty(Session::get('couponAmount')))
                                 <li>Cart Sub Total <span>TK {{ $subtotal }}</span></li>
                                 <li>Coupon Amount(-) <span>TK {{ Session::get('couponAmount') }}</span></li>
-                                <li>Grand Total <span>TK {{ $grand_total =  $subtotal - Session::get('couponAmount') }}</span></li>
+                                <li>Shipping Charge(+) <span>TK {{ Session::get('shipping_charge') }}</span></li>
+                                <li>Grand Total <span>TK {{ $grand_total =  ($subtotal + Session::get('shipping_charge')) - Session::get('couponAmount') }}</span></li>
                             @else
-                                <li>Grand Total <span>TK {{ $grand_total = $subtotal }}</span></li>
+                                <li>Shipping Charge(+) <span>TK {{ Session::get('shipping_charge') }}</span></li>
+                                <li>Grand Total <span>TK {{ $grand_total = ( $subtotal + Session::get('shipping_charge')) }}</span></li>
                             @endif
                         </ul>
                     </div>
@@ -224,6 +226,7 @@
                             <form action="{{ route('order.store') }}" method="post">
                                 @csrf
                                 <input type="hidden" name="grand_total" value="{{ $grand_total }}">
+                                <input type="hidden" name="shipping_charge" value="{{ Session::get('shipping_charge') }}">
                                 <ul class="user_option text-center">
                                     <li>
                                         <label for=""><b>select payment method: </b> </label>

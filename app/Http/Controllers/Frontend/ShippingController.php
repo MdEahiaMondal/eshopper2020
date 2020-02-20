@@ -6,6 +6,7 @@ use App\Cart;
 use App\Country;
 use App\PostalCode;
 use App\Shipping;
+use App\ShippingCharge;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Session;
@@ -34,9 +35,9 @@ class ShippingController extends Controller
            'phone' => 'required',
            'zipcode' => 'required',
        ]);
-
-
-
+       Session::forget('shipping_charge');
+       $country_wise_charge = ShippingCharge::where('country', $request->country)->first()->shipping_charge;
+        Session::put('shipping_charge', $country_wise_charge);
        $check  = Shipping::where('user_id', auth()->id())->first();
         $request['user_id'] = auth()->id();
 
@@ -47,8 +48,6 @@ class ShippingController extends Controller
         {
             return redirect()->back()->with('error', 'Please enter your valid pincode or post code!');
         }
-
-
 
        if (isset($check))
        {
@@ -68,7 +67,7 @@ class ShippingController extends Controller
        }
 
         return redirect()->action(
-            'Frontend\ShippingController@ShippingDetaile', ['id' => $shipping_id->id]
+            'Frontend\ShippingController@ShippingDetaile', ['id' => $shipping_id->id,]
         );
     }
 
