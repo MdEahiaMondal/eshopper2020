@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Cart;
 use App\Order;
 use App\OrderProduct;
+use App\Product;
 use App\ProductAttribute;
 use App\Shipping;
 use App\User;
@@ -26,21 +27,30 @@ class OrderController extends Controller
         $shipping = Shipping::where('user_id', auth()->id())->first();
         $carts = Cart::where('user_email', auth()->user()->email)->get();
 
+        //Prevent Sold Out Products to Order
         foreach ($carts as $cart)
         {
-
             $checkQuantityExistOrNot = ProductAttribute::where(['product_id'=> $cart->product_id, 'size' => $cart->size])->first();
 
+            //out of stock
             if ($checkQuantityExistOrNot->stock == 0)
             {
-                return redirect()->back()->with('warning', ''.$cart->product_name.' is out of stock ');
+                //  we need to remove that product whice is out of stock
+                Product::deleteCartProduct($cart->product_id, auth()->user()->email);
+                return redirect()->back()->with('warning', ''.$cart->product_name.' is removed for out of stock ');
             }
-
+            //  quantity is not available
             if ($checkQuantityExistOrNot->stock < $cart->quantity)
             {
                return redirect()->back()->with('warning', ''.$cart->product_name.' is available quantity is ('.$checkQuantityExistOrNot->stock.') ');
             }
-
+            // product attribute is desible
+            $enable= Product::desiableProduct($cart->product_id);
+            if (!$enable)
+            {
+                Product::deleteCartProduct($cart->product_id, auth()->user()->email);
+                return redirect()->back()->with('warning', 'Disable product is removed, Please try again');
+            }
         }
 
         $data = new Order();

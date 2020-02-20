@@ -69,4 +69,21 @@ class Product extends Model
     }
 
 
+    public static function deleteCartProduct($product_id, $user_email)
+    {
+        Cart::where(['product_id' =>$product_id, 'user_email' => $user_email])->delete();
+    }
+
+    public static function desiableProduct($product_id)
+    {
+        $desibleProduct = Product::where('id', $product_id)->first()->status;
+        if($desibleProduct == 1)
+        {
+           return true;
+        }
+        return false;
+
+    }
+
+
 }
