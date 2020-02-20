@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Cart;
 use App\Order;
 use App\OrderProduct;
+use App\ProductAttribute;
 use App\Shipping;
 use App\User;
 use Illuminate\Http\Request;
@@ -23,6 +24,24 @@ class OrderController extends Controller
             'payment_method' => 'required'
         ]);
         $shipping = Shipping::where('user_id', auth()->id())->first();
+        $carts = Cart::where('user_email', auth()->user()->email)->get();
+
+        foreach ($carts as $cart)
+        {
+
+            $checkQuantityExistOrNot = ProductAttribute::where(['product_id'=> $cart->product_id, 'size' => $cart->size])->first();
+
+            if ($checkQuantityExistOrNot->stock == 0)
+            {
+                return redirect()->back()->with('warning', ''.$cart->product_name.' is out of stock ');
+            }
+
+            if ($checkQuantityExistOrNot->stock < $cart->quantity)
+            {
+               return redirect()->back()->with('warning', ''.$cart->product_name.' is available quantity is ('.$checkQuantityExistOrNot->stock.') ');
+            }
+
+        }
 
         $data = new Order();
         $data ->user_id = auth()->id();
@@ -42,8 +61,6 @@ class OrderController extends Controller
         $data ->payment_method = $request->payment_method;
         $data ->grand_total = $request->grand_total;
         $data->save();
-        $carts = Cart::where('user_email', auth()->user()->email)->get();
-
 
         foreach ($carts as $cart){
             OrderProduct::create([
@@ -55,6 +72,16 @@ class OrderController extends Controller
                 'product_price' => $cart->price,
                 'product_quantity' => $cart->quantity,
             ]);
+
+            /*now we need to reduce the product quantity*/
+            $checkStock = ProductAttribute::where(['sku' => $cart->product_sku_code])->first();
+            $finalStock =($checkStock->stock - $cart->quantity);
+            if ($finalStock < 0)
+            {
+                $finalStock = 0;
+            }
+            ProductAttribute::where(['sku' => $cart->product_sku_code])
+                ->update(['stock' => $finalStock]); // now updated;
         }
 
         // now we need to delete cart item
