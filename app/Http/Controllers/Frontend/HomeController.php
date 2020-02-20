@@ -33,7 +33,6 @@ class HomeController extends Controller
         if ($chack == 0){
             return view('errors.403');
         }
-
         // get all category
         $categories = Category::with('children')->where('parent_id', '=', null)->get();
         // get search slug category
@@ -46,23 +45,34 @@ class HomeController extends Controller
             $sub = $sub_category->toArray();
             array_push($sub,$mainId);
             $products = Product::whereIn('category_id',$sub)->get();
+            $bradCame = '<a href="/">Home</a>/<a href="'.$catgori->slug.'">'.$catgori->name.'</a>';
         }else{
             // if url is sub category
             $products = Product::where('category_id',$catgori->id)->get();
+            $bradCame = '<a href="/">Home</a>/<a href="'.$catgori->parent->slug.'">'.$catgori->parent->name.'</a>/<a href="'.$catgori->slug.'">'.$catgori->name.'</a>';
         }
-        return view('frontend.home.home', compact('products', 'categories', 'catgori'));
+        return view('frontend.home.home', compact('products', 'categories', 'catgori', 'bradCame'));
     }
 
 
     public function productDetail($url = null){
-        $product = Product::with('attributes')->where('slug', '=', $url)->first();
+
+        $product = Product::with('attributes','productCategory')->where('slug', '=', $url)->first();
+        $category = $product->productCategory;
+
+        if ($category->parent_id)
+        {
+            $bradCame = '<a href="/">Home</a> / <a href="/products/'.$category->parent->slug.'">'.$category->parent->name.'</a> / <a href="/products/'.$category->slug.'">'.$category->name.'</a> / '.$product->name.'';
+        }else{
+            $bradCame = '<a href="/">Home</a> / <a href="/products/'.$category->slug.'">'.$category->name.'</a> / '.$product->name.'';
+        }
         // chack valid url
         if (!$product){
             return view('errors.403');
         }
         $relatedProducts = Product::where('id', '!=', $product->id)->where('category_id', '=',$product->category_id)->get();
         $product_stock = ProductAttribute::where('product_id', $product->id)->sum('stock');
-        return view('frontend.pages.product_detail', compact('product', 'product_stock', 'relatedProducts'));
+        return view('frontend.pages.product_detail', compact('product', 'product_stock', 'relatedProducts', 'bradCame'));
 
     }
 

@@ -41,10 +41,14 @@
 
                         </div>
                         <div class="col-sm-7">
+                            <p>{!! $bradCame !!}</p>
+                            <span>&nbsp;</span>
                             <form action="{{ route('cart.store') }}" method="post">
                                 @csrf
                                 <div class="product-information"><!--/product-information-->
+
                                     <img src="{{ asset('frontend/images/product-details/new.jpg') }}" class="newarrival" alt="" />
+
                                     <h2>{{ $product->name }}</h2>
                                     <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="product_name" id="" value="{{ $product->name }}">

@@ -94,6 +94,12 @@
                             @endif
                         @endif
 
+                        @if(!empty($bradCame))
+                            <div>
+                                <span class=""> {!! $bradCame !!}</span>
+                            </div>
+                            <div>&nbsp;</div>
+                         @endif
                         @if($products->count() > 0)
                             @foreach($products as $product)
                                 <div class="col-sm-4">
