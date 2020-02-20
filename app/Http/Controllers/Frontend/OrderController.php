@@ -30,19 +30,25 @@ class OrderController extends Controller
         //Prevent Sold Out Products to Order
         foreach ($carts as $cart)
         {
-            $checkQuantityExistOrNot = ProductAttribute::where(['product_id'=> $cart->product_id, 'size' => $cart->size])->first();
+            $checkAttributeExistOrNot = ProductAttribute::where(['product_id'=> $cart->product_id, 'size' => $cart->size])->first();
 
+
+            if (!$checkAttributeExistOrNot) // if it is null
+            {
+                Product::deleteCartProduct($cart->product_id, auth()->user()->email);
+                return redirect()->back()->with('warning', ''.$cart->product_name.' is removed. Please try again');
+            }
             //out of stock
-            if ($checkQuantityExistOrNot->stock == 0)
+            if ($checkAttributeExistOrNot->stock == 0)
             {
                 //  we need to remove that product whice is out of stock
                 Product::deleteCartProduct($cart->product_id, auth()->user()->email);
                 return redirect()->back()->with('warning', ''.$cart->product_name.' is removed for out of stock ');
             }
             //  quantity is not available
-            if ($checkQuantityExistOrNot->stock < $cart->quantity)
+            if ($checkAttributeExistOrNot->stock < $cart->quantity)
             {
-               return redirect()->back()->with('warning', ''.$cart->product_name.' is available quantity is ('.$checkQuantityExistOrNot->stock.') ');
+               return redirect()->back()->with('warning', ''.$cart->product_name.' is available quantity is ('.$checkAttributeExistOrNot->stock.') ');
             }
             // product attribute is desible
             $enable= Product::desiableProduct($cart->product_id);
