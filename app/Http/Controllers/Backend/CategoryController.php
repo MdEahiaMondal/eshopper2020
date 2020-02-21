@@ -7,6 +7,7 @@ use App\Http\Controllers\Component\FileHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
 {
@@ -25,6 +26,10 @@ class CategoryController extends Controller
 
     public function index()
     {
+        if(Session::get('adminDetails')->category_access == 0)
+        {
+            return redirect('admin/dashboard')->with('warning', 'you are not allow');
+        }
         $categories = Category::with('parent')->withCount('categoryProducts')->orderBy('id', 'desc')->get();
         return view('backend.category.index', compact('categories'));
     }
@@ -33,6 +38,10 @@ class CategoryController extends Controller
 
     public function create()
     {
+        if(Session::get('adminDetails')->category_access == 0)
+        {
+            return redirect('admin/dashboard')->with('warning', 'you are not allow');
+        }
         $main_categories = Category::with('parent', 'children')->orderBy('id', 'desc')->where('parent_id', null)->get();
         return view('backend.category.create', compact('main_categories'));
     }
@@ -40,7 +49,6 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
-
         $img =   $request->file('img');
         if ($img)
         {
@@ -58,6 +66,10 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
+        if(Session::get('adminDetails')->category_access == 0)
+        {
+            return redirect('admin/dashboard')->with('warning', 'you are not allow');
+        }
         $main_categories = Category::with('parent', 'children')->orderBy('id', 'desc')->where('parent_id', null)->get();
         return view('backend.category.edit', compact( 'category' ,'main_categories'));
     }
@@ -86,7 +98,10 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-
+        if(Session::get('adminDetails')->category_access == 0)
+        {
+            return redirect('admin/dashboard')->with('warning', 'you are not allow');
+        }
 
         if (($category->children->count() == 0) and (count($category->categoryProducts) == 0)){
             if ($category->delete()){
