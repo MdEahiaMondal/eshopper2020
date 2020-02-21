@@ -22,6 +22,7 @@ Route::match(['get', 'post'], '/admin', 'Backend\AdminController@login')->name('
 Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin', 'middleware' => 'admin'], function (){
 
     // admin section controller
+    Route::resource('role_permission', 'RolePermission');
     Route::get('dashboard', 'AdminController@index')->name('home');
     Route::get('logout', 'AdminController@logout')->name('logout');
     Route::get('setting', 'AdminController@setting')->name('setting');
