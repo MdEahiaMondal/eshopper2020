@@ -26,11 +26,23 @@ class RolePermission extends Controller
     {
         if ($request->type == 'admin')
         {
-            $request['product_access'] = 1;
+            $request['product_all_access'] = 1;
+            $request['product_edit_access'] = 1;
+            $request['product_view_access'] = 1;
+            $request['product_delete_access'] = 1;
             $request['category_access'] = 1;
             $request['order_access'] = 1;
             $request['coupon_access'] = 1;
         }
+        if ( $request->product_all_access)
+        {
+            $request['product_all_access'] = 1;
+            $request['product_create_access'] = 1;
+            $request['product_edit_access'] = 1;
+            $request['product_view_access'] = 1;
+            $request['product_delete_access'] = 1;
+        }
+
         $request['password'] = md5($request->password);
         Admin::create($request->all());
         return redirect()->back()->with('success', 'User Role Create Done !');
@@ -55,15 +67,33 @@ class RolePermission extends Controller
 
         if ($request->type == 'admin')
         {
-            $request['product_access'] = 1;
+            $request['product_all_access'] = 1;
+            $request['product_create_access'] = 1;
+            $request['product_edit_access'] = 1;
+            $request['product_view_access'] = 1;
+            $request['product_delete_access'] = 1;
             $request['category_access'] = 1;
             $request['order_access'] = 1;
             $request['coupon_access'] = 1;
         }else{
-            $request['product_access'] = $request->product_access ?? 0;
+            if ($request->product_all_access)
+            {
+                $request['product_edit_access'] = 1;
+                $request['product_create_access'] = 1;
+                $request['product_view_access'] = 1;
+                $request['product_delete_access'] = 1;
+                $request['product_all_access'] = 1;
+            }else
+                {
+                    $request['product_edit_access'] = $request->product_edit_access ?? 0;
+                    $request['product_create_access'] = $request->product_create_access ?? 0;
+                    $request['product_view_access'] = $request->product_view_access ?? 0;
+                    $request['product_delete_access'] = $request->product_delete_access ?? 0;
+                }
             $request['category_access'] = $request->category_access ?? 0;
             $request['order_access'] = $request->order_access ?? 0;
             $request['coupon_access'] = $request->coupon_access ?? 0;
+
         }
         $admin = Admin::findOrFail($id);
         $admin->update($request->all());

@@ -1,13 +1,19 @@
  @extends('backend.layouts.master')
 
 @section('content')
+    @php
+        use Illuminate\Support\Facades\Session;
+        $adminDeatil = Session::get('adminDetails');
+    @endphp
      <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Products</h2>
         </div>
         <div class="col-lg-2">
             <div class="ibox-tools">
-                <a href="{{ route('admin.product.create') }}" class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><i class="fa fa-plus"></i> <strong>Create</strong></a>
+                @if($adminDeatil->product_all_access == 1 || $adminDeatil->product_create_access == 1)
+                    <a href="{{ route('admin.product.create') }}" class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><i class="fa fa-plus"></i> <strong>Create</strong></a>
+                @endif
             </div>
         </div>
     </div>
@@ -74,10 +80,11 @@
                                              <td>{{ $product->status }}</td>
                                             <td>{{ $product->created_at->diffForhumans() }}</td>
                                             <td class="text-center">
-
+                                                @if($adminDeatil->product_all_access == 1 || $adminDeatil->product_edit_access == 1)
                                                 <a href="{{ route('admin.product.edit', $product->id) }}" title="Edit" class="btn btn-info cus_btn">
                                                     <i class="fa fa-pencil-square-o"></i> <strong>Edit</strong>
                                                 </a>
+                                                @endif
 
                                                 <a href="{{ route('admin.add.product.attribute', $product->id) }}" title="Add Product Attribute" class="btn btn-info cus_btn">
                                                     <i class="fa fa-plus"></i> <strong>Attr</strong>
@@ -87,6 +94,7 @@
                                                     <i class="fa fa-plus"></i> <strong>Images</strong>
                                                 </a>
 
+                                              @if($adminDeatil->product_all_access == 1 || $adminDeatil->product_delete_access == 1)
                                                 <a onclick="deleteRow({{ $product->id }})" href="JavaScript:void(0)" title="Delete" class="btn btn-danger cus_btn">
                                                     <i class="fa fa-trash"></i> <strong>Delete</strong>
                                                 </a>
@@ -95,6 +103,7 @@
                                                     @method('DELETE')
                                                     @csrf()
                                                 </form>
+                                               @endif
 
                                             </td>
                                         </tr>

@@ -36,7 +36,11 @@
  <div class="form-group" id="hideMe">
      <label class="col-lg-2 control-label">Access<span class="required-star"> *</span></label>
      <div class="col-lg-6">
-         <input type="checkbox" {{ (isset($admin->product_access) and $admin->product_access == 1) ? 'checked' : '' }} name="product_access" value="1" id="" class="i-checks"> product
+         <input type="checkbox" {{ (isset($admin->product_all_access) and $admin->product_all_access == 1) ? 'checked' : '' }} name="product_all_access" value="1" id="" class="i-checks"> product all access
+         &nbsp;
+         <input type="checkbox" {{ (isset($admin->product_edit_access) and $admin->product_edit_access == 1) ? 'checked' : '' }} name="product_edit_access" value="1" id="" class="i-checks"> product edit access
+         &nbsp;
+         <input type="checkbox" {{ (isset($admin->product_view_access) and $admin->product_view_access == 1) ? 'checked' : '' }} name="product_view_access" value="1" id="" class="i-checks"> product delete access
          &nbsp;
          <input type="checkbox" {{ (isset($admin->category_access) and $admin->category_access == 1) ? 'checked': '' }} name="category_access" value="1" id="" class="i-checks"> category
          &nbsp;

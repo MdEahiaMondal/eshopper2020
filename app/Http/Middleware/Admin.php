@@ -26,10 +26,16 @@ class Admin
             Session::put('adminDetails', $admin);
             $currentPath = Request::path();
             $adminDeatil = Session::get('adminDetails');
-            if ($currentPath == 'admin/product' && $adminDeatil->product_access == 0)
+       /*     if ($currentPath == 'admin/product' && $adminDeatil->product_edit_access == 0)
             {
                 return redirect('admin/dashboard')->with('warning', 'You are not allow');
             }
+
+            if ($currentPath == 'admin/product' &&  $adminDeatil->product_view_access == 0)
+            {
+                return redirect('admin/dashboard')->with('warning', 'You are not allow');
+            }
+            */
             if ($currentPath == 'admin/category' && $adminDeatil->category_access == 0)
             {
                 return redirect('admin/dashboard')->with('warning', 'You are not allow');

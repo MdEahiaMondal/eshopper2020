@@ -41,8 +41,8 @@
                 @if($adminDeatil->category_access == 1)
                     <a class="{{ preg_match("/category/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.category.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Categories</span></a>
                 @endif
-                @if($adminDeatil->product_access == 1)
-                    <a class="{{ preg_match("/product/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.product.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Products</span></a>
+                @if($adminDeatil->product_all_access == 1 || $adminDeatil->product_edit_access == 1 || $adminDeatil->product_view_access == 1 || $adminDeatil->product_delete_access == 1)
+                <a class="{{ preg_match("/product/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.product.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Products</span></a>
                 @endif
                 @if($adminDeatil->coupon_access == 1)
                     <a class="{{ preg_match("/coupon/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.coupon.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Coupons</span></a>

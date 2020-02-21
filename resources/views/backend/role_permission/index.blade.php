@@ -53,6 +53,7 @@
                                 <tr>
                                     <th>Si</th>
                                     <th>Username</th>
+                                    <th>Type</th>
                                     <th>Role</th>
                                     <th width="100">Status</th>
                                     <th class="text-center">Actions</th>
@@ -64,14 +65,21 @@
                                     <tr>
                                         <td>{{$loop->index + 1 }}</td>
                                         <td>{{ $admin->username }}</td>
+                                        <td>{{ $admin->type }}</td>
                                         @if($admin->type == 'admin')
                                             <td><span class="badge">All</span></td>
                                             @else
                                             <td>
-                                                @if($admin->product_access == 1)
-                                                    <span class="badge">product_access</span>
+                                                @if($admin->product_edit_access == 1)
+                                                    <span class="badge">product_edit_access</span>
                                                 @endif
-                                                @if($admin->category_access == 1)
+                                                    @if($admin->product_view_access == 1)
+                                                    <span class="badge">product_view_access</span>
+                                                @endif
+                                                @if($admin->product_delete_access == 1)
+                                                    <span class="badge">product_delete_access</span>
+                                                @endif
+                                                    @if($admin->category_access == 1)
                                                     <span class="badge">category_access</span>
                                                 @endif
                                                 @if($admin->order_access == 1)

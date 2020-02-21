@@ -10,6 +10,7 @@ use App\Product;
 use App\ProductAttribute;
 use App\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
@@ -34,6 +35,10 @@ class ProductController extends Controller
 
     public function create()
     {
+        if(Session::get('adminDetails')->product_all_access == 0 || Session::get('adminDetails')->product_create_access == 0)
+        {
+            return redirect('admin/dashboard')->with('warning', 'you are not allow');
+        }
         $main_categories = Category::with('parent', 'children')->orderBy('id', 'desc')->where('parent_id', null)->get();
         return view('backend.product.create',compact('main_categories'));
     }
@@ -71,32 +76,27 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-
+        if(Session::get('adminDetails')->product_all_access == 0 || Session::get('adminDetails')->product_edit_access == 0)
+        {
+            return redirect('admin/dashboard')->with('warning', 'you are not allow');
+        }
         $main_categories = Category::with('parent', 'children')->orderBy('id', 'desc')->where('parent_id', null)->get();
         return view('backend.product.edit', compact('main_categories', 'product'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, Product $product)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Product $product)
     {
-        //
+        if(Session::get('adminDetails')->product_all_access == 0 || Session::get('adminDetails')->product_delete_access == 0)
+        {
+            return redirect('admin/dashboard')->with('warning', 'you are not allow');
+        }
     }
 
 
