@@ -24,6 +24,13 @@ class RolePermission extends Controller
 
     public function store(Request $request)
     {
+        if ($request->type == 'admin')
+        {
+            $request['product_access'] = 1;
+            $request['category_access'] = 1;
+            $request['order_access'] = 1;
+            $request['coupon_access'] = 1;
+        }
         $request['password'] = md5($request->password);
         Admin::create($request->all());
         return redirect()->back()->with('success', 'User Role Create Done !');
@@ -45,6 +52,19 @@ class RolePermission extends Controller
 
     public function update(Request $request, $id)
     {
+
+        if ($request->type == 'admin')
+        {
+            $request['product_access'] = 1;
+            $request['category_access'] = 1;
+            $request['order_access'] = 1;
+            $request['coupon_access'] = 1;
+        }else{
+            $request['product_access'] = $request->product_access ?? 0;
+            $request['category_access'] = $request->category_access ?? 0;
+            $request['order_access'] = $request->order_access ?? 0;
+            $request['coupon_access'] = $request->coupon_access ?? 0;
+        }
         $admin = Admin::findOrFail($id);
         $admin->update($request->all());
         return redirect()->back()->with('success', 'User Role Updated Done !');
