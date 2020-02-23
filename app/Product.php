@@ -90,13 +90,20 @@ class Product extends Model
     public static function getGrandTotal()
     {
         $carts = Cart::where('user_email', auth()->user()->email)->get();
-        foreach ($carts as $cart)
-        {
+        foreach ($carts as $cart) {
             $product = ProductAttribute::where(['product_id' => $cart->product_id, 'size' => $cart->size])->first()->price;
             $productPriceArr[] = $product;
         }
         return array_sum($productPriceArr) + Session::get('shipping_charge') - Session::get('couponAmount');
     }
+
+
+    public static function getProductPrice($product_id, $size)
+    {
+        $getProductPrice = ProductAttribute::where(['product_id' => $product_id, 'size' => $size])->first()->price;
+        return $getProductPrice;
+    }
+
 
 
 

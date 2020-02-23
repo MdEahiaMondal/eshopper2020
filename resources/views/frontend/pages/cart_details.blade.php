@@ -44,7 +44,7 @@
                                     <p>Code: {{ $cart->product->code }} | {{ $cart->size }} | {{ $cart->color }}</p>
                                 </td>
                                 <td class="cart_price">
-                                    <p>TK {{ $cart->price }}</p>
+                                    <p>TK {{ \App\Product::getProductPrice($cart->product_id,$cart->size) }}</p>
                                 </td>
                                 <td class="cart_quantity">
                                     <div class="cart_quantity_button">
@@ -56,7 +56,7 @@
                                     </div>
                                 </td>
                                 <td class="cart_total">
-                                    <p class="cart_total_price">TK {{ ($cart->price * $cart->quantity) }}</p>
+                                    <p class="cart_total_price">TK {{ (\App\Product::getProductPrice($cart->product_id,$cart->size) * $cart->quantity) }}</p>
                                 </td>
                                 <td class="cart_delete">
 
@@ -67,7 +67,7 @@
                                     </form>
                                 </td>
                             </tr>
-                            @php $subtotal += ($cart->price * $cart->quantity) @endphp
+                            @php $subtotal += (\App\Product::getProductPrice($cart->product_id,$cart->size) * $cart->quantity) @endphp
                         @endforeach
                     </tbody>
                 </table>

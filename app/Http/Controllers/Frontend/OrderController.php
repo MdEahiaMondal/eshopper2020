@@ -69,8 +69,9 @@ class OrderController extends Controller
             }
 
         }
-
+        Session::forget('orderGrandTotal');
         $grandTotal = Product::getGrandTotal(); // get grand total from ouer recode not cart// if some bad user do something to his cart
+        Session::put('orderGrandTotal', $grandTotal);
         $data = new Order();
         $data ->user_id = auth()->id();
         $data ->shipping_name = $shipping->name;
