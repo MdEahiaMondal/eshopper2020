@@ -104,6 +104,7 @@ class ShippingController extends Controller
 
     public function ShippingDetaile($shipping_id)
     {
+
         if (auth()->check()){
             $carts = Cart::where('user_email', '=', auth()->user()->email)->get();
         }else{

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 
 class Product extends Model
 {
@@ -84,6 +85,19 @@ class Product extends Model
         return false;
 
     }
+
+
+    public static function getGrandTotal()
+    {
+        $carts = Cart::where('user_email', auth()->user()->email)->get();
+        foreach ($carts as $cart)
+        {
+            $product = ProductAttribute::where(['product_id' => $cart->product_id, 'size' => $cart->size])->first()->price;
+            $productPriceArr[] = $product;
+        }
+        return array_sum($productPriceArr) + Session::get('shipping_charge') - Session::get('couponAmount');
+    }
+
 
 
 }

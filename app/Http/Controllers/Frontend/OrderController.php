@@ -70,6 +70,7 @@ class OrderController extends Controller
 
         }
 
+        $grandTotal = Product::getGrandTotal(); // get grand total from ouer recode not cart// if some bad user do something to his cart
         $data = new Order();
         $data ->user_id = auth()->id();
         $data ->shipping_name = $shipping->name;
@@ -86,7 +87,7 @@ class OrderController extends Controller
         $data ->shipping_charge = $request->shipping_charge ? $request->shipping_charge : 0.00;
         $data ->status = 0;
         $data ->payment_method = $request->payment_method;
-        $data ->grand_total = $request->grand_total;
+        $data ->grand_total = $grandTotal;
         $data->save();
 
         foreach ($carts as $cart){
