@@ -134,8 +134,8 @@
                     <div class="single-widget">
                         <h2>About Shopper</h2>
                         <form action="#" class="searchform">
-                            <input type="text" placeholder="Your email address" />
-                            <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+                            <input type="email" id="Subscriberemail" placeholder="Your email address" />
+                            <button onclick="NewsleterSubcsriber()" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
                             <p>Get the most recent updates from <br />our site and be updated your self...</p>
                         </form>
                     </div>
@@ -155,4 +155,32 @@
     </div>
 
 </footer><!--/Footer-->
+
+
+<script>
+    function NewsleterSubcsriber() {
+        event.preventDefault();
+        var Subscriberemail = $("#Subscriberemail").val();
+
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(Subscriberemail.match(mailformat))
+        {
+            $.get("{{ route('submit.subscriber.email') }}", {Subscriberemail: Subscriberemail}, function (res) {
+                if(res == 'false')
+                {
+                    toastr.warning('Email alredy exists! Thanks for your talented dicesion');
+                }else{
+                    toastr.success('Your request submitted! Thanks for your talented dicesion');
+                    $("#Subscriberemail").val('')
+                }
+            });
+        }
+        else
+        {
+            alert("You have entered an invalid email address!");
+            return false;
+        }
+    }
+
+</script>
 

@@ -182,7 +182,7 @@
                                         <td>{{ $product->product_name }}</td>
                                         <td>{{ $product->product_size }}</td>
                                         <td>{{ $product->product_color }}</td>
-                                        <td>{{ $product->product_price }}</td>
+                                        <td>{{ \App\Product::getProductPrice($product->product_id,$product->product_size) }}</td>
                                         <td>{{ $product->product_quantity }}</td>
                                         <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
                                     </tr>

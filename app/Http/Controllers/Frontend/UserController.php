@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Country;
 use App\Http\Controllers\Controller;
+use App\NewsleterSubscriber;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -193,6 +194,22 @@ class UserController extends Controller
             return response()->json('false');
         }
 
+    }
+
+
+    public function CheckSubscriberEmailOrSubmit(Request $request)
+    {
+        $check = NewsleterSubscriber::where('email', $request->Subscriberemail)->first();
+        if ($check)
+        {
+            return response()->json('false');
+        }else{
+            NewsleterSubscriber::create([
+                'email' => $request->Subscriberemail,
+                'status' => 1,
+            ]);
+            return response()->json('true');
+        }
     }
 
 

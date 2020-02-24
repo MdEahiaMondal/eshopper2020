@@ -55,6 +55,9 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
     // shipping charge
     Route::resource('shipping_charge','ShippingChargeController');
 
+    // shipping charge
+    Route::resource('newsleter_subscriber','NewsleterSubscriber');
+
 });
 
 
@@ -115,6 +118,10 @@ Route::get('login-register/email/check','Frontend\UserController@loginRegisterEm
 Route::get('email/confirmation/{code}','Frontend\UserController@emailConfirmation')->name('email.confirmation');
 Route::get('forgot-password','Frontend\UserController@ForgotPassword')->name('user.forgot.password');
 Route::post('forgot-password','Frontend\UserController@ForgotPasswordCheck')->name('user.forgot.password.check');
+
+// subscriber email
+Route::get('subscriber/email','Frontend\UserController@CheckSubscriberEmailOrSubmit')->name('submit.subscriber.email');
+
 
 
 
