@@ -21,7 +21,7 @@
 
                         <div class="row" style="margin-bottom: 10px">
 
-                            <div class="col-sm-12">
+                            <div class="col-sm-8">
                                 <form action="{{ route('admin.newsleter_subscriber.index') }}" method="get" class="form-inline" role="form">
 
                                     <div class="form-group">
@@ -44,6 +44,11 @@
                                         </div>
                                     </div>
                                 </form>
+                            </div>
+
+
+                            <div class="col-sm-2 pull-right">
+                                <a class="btn btn-sm btn-primary" href="{{ route('admin.get.newsleter.subscriber.excel') }}">Excel</a>
                             </div>
                         </div>
 

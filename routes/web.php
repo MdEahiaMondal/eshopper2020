@@ -57,6 +57,7 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
 
     // shipping charge
     Route::resource('newsleter_subscriber','NewsleterSubscriber');
+    Route::get('newsleter-subscriber/excel-file','NewsleterSubscriber@subscriberExcelFile')->name('get.newsleter.subscriber.excel');
 
 });
 

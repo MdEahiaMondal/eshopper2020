@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\SubscriberExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class NewsleterSubscriber extends Controller
 {
@@ -21,9 +23,19 @@ class NewsleterSubscriber extends Controller
         return redirect()->back()->with('success', 'Subscriber deleted success !');
     }
 
+    public function show()
+    {
+
+    }
     public function statusActiveUnactive()
     {
 
+    }
+
+
+    public function subscriberExcelFile()
+    {
+        return Excel::download(new SubscriberExport, 'subscribe.xlsx');
     }
 
 
