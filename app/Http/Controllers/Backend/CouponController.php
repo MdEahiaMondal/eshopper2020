@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Coupon;
+use App\Exports\CouponsExport;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CouponController extends Controller
 {
@@ -39,6 +41,13 @@ class CouponController extends Controller
         return redirect()->back()->with('success', 'Coupon created success !');
 
     }
+
+
+    public function CouponListExcel()
+    {
+        return Excel::download(new CouponsExport(), 'coupon.xlsx');
+    }
+
 
     /**
      * Display the specified resource.

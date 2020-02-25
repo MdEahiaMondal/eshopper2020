@@ -40,6 +40,11 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
 
     // apply coupons
     Route::resource('coupon','CouponController');
+    // get excel file for dowenload
+    Route::get('coupon-list/excel-file','CouponController@CouponListExcel')->name('get.coupon.dowenload.excel');
+
+
+
     // Banner Controller
     Route::resource('banner','BannerController');
 
@@ -57,6 +62,7 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
 
     // shipping charge
     Route::resource('newsleter_subscriber','NewsleterSubscriber');
+    // get excel file for dowenload
     Route::get('newsleter-subscriber/excel-file','NewsleterSubscriber@subscriberExcelFile')->name('get.newsleter.subscriber.excel');
 
 });
