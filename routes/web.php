@@ -37,6 +37,7 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
     Route::post('update/product/{id}/attribute', 'ProductController@updateProductAttributeStore')->name('add.product.attribute.update');
     Route::post('product/{id}/images', 'ProductController@addProductImageStore')->name('product.images.store');
     Route::get('product/{id}/image', 'ProductController@ShowProductImageForm')->name('product.images.form');
+    Route::get('product/excel/file', 'ProductController@poductExcelFileDowenload')->name('get.products.excel');
 
     // apply coupons
     Route::resource('coupon','CouponController');

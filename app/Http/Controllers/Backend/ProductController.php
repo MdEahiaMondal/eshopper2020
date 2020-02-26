@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Category;
+use App\Exports\ProductsExport;
 use App\Http\Controllers\Component\FileHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
@@ -12,6 +13,7 @@ use App\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -182,6 +184,13 @@ class ProductController extends Controller
             }
         }
         return redirect()->back()->with('success', 'Product Images Store successfully !');
+    }
+
+
+
+    public function poductExcelFileDowenload()
+    {
+        return Excel::download(new ProductsExport(), 'products.xlsx');
     }
 
 
