@@ -58,6 +58,15 @@
                 <a class="{{ preg_match("/newsleter_subscriber/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.newsleter_subscriber.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Subscriber</span></a>
             </li>
 
+            <li>
+                <a href="#0"><i class="fa fa-th-large"></i> <span class="nav-label">Users</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="{{ route('admin.user.index') }}">All Users</a></li>
+                    <li><a href="{{ route('admin.user.chart.list') }}">Users Charts</a></li>
+                </ul>
+            </li>
+
+
         </ul>
     </div>
 </nav>

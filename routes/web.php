@@ -21,6 +21,11 @@ Route::match(['get', 'post'], '/admin', 'Backend\AdminController@login')->name('
 
 Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin', 'middleware' => 'admin'], function (){
 
+    // user section controller
+    Route::resource('user', 'UserController');
+    Route::get('users/chart-show', 'UserController@UserListChart')->name('user.chart.list');
+
+
     // admin section controller
     Route::resource('role_permission', 'RolePermission');
     Route::get('dashboard', 'AdminController@index')->name('home');
