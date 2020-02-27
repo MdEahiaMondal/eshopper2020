@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Order;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -109,5 +110,13 @@ class OrderController extends Controller
         Order::where('id', $request->order_id)->first()->update(['status'=> $request->status]);
         return redirect()->back()->with('success', 'Order Status Successfully Changed');
     }
+
+
+    public function orderPdfInvoice(Order $order)
+    {
+        $pdf = PDF::loadView('backend.orders.invoice', compact('order'));
+        return $pdf->download('invoice.pdf');
+    }
+
 
 }

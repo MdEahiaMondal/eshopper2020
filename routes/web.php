@@ -53,6 +53,7 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
     Route::resource('order','OrderController');
     Route::post('order/status','OrderController@orderStatusUpdate')->name('order.status.update');
     Route::get('order/{order}/invoice','OrderController@orderInvoice')->name('order.invoice');
+    Route::get('order/{order}/pdf/invoice','OrderController@orderPdfInvoice')->name('order.pdf.invoice');
 
     // cms pages
     Route::resource('cms_page','CmsPageController');
@@ -100,6 +101,11 @@ Route::get('cart/{id}/increment','Frontend\CartController@cartUpdateIncrement')-
 Route::get('cart/{id}/decrement','Frontend\CartController@cartUpdateDecrement')->name('cart.update.decrement');
 Route::post('cart/applay/coupon','Frontend\CartController@cartApplayCoupon')->name('cart.applay.coupon');
 Route::post('check/post-code','Frontend\CartController@CheckPostCode')->name('check.postal_code');
+
+
+// wish list
+Route::resource('wishlist','Frontend\WishlistController');
+Route::post('wishlist/add-to-cart','Frontend\WishlistController@addToCart')->name('wishlist.add.to.cart');
 
 // UserController for login register system for customer
 Route::get('login-register','Frontend\UserController@loginRegisterFormShow')->name('login.register'); // show login and register form

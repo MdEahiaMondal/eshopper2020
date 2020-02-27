@@ -59,7 +59,7 @@
                                         <th>Order Amount</th>
                                         <th>Payment Method</th>
                                         <th>Status</th>
-                                        <th class="text-center">Actions</th>
+                                        <th class="text-center" width="400">Actions</th>
                                     </tr>
                                 </thead>
 
@@ -81,9 +81,17 @@
                                             <td>{{ $order->payment_method }}</td>
                                             <td>{{ $order->status }}</td>
                                             <td class="text-center">
+
                                                 <a href="{{ route('admin.order.show', $order->id) }}" title="Edit" class="btn btn-info cus_btn">
                                                     <i class="fa fa-eye"></i> <strong>View</strong>
                                                 </a>
+
+                                                @if($order->status === 'shipped')
+                                                    <a href="{{ route('admin.order.pdf.invoice', $order->id) }}" title="Order Invoice" class="btn btn-info cus_btn">
+                                                        <i class="fa fa-file-pdf-o"></i> <strong> Pdf Invoice</strong>
+                                                    </a>
+                                                @endif
+
                                                 <a href="{{ route('admin.order.invoice', $order->id) }}" title="Order Invoice" class="btn btn-info cus_btn">
                                                     <i class="fa fa-file-invoice"></i> <strong>Invoice</strong>
                                                 </a>

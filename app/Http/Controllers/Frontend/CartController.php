@@ -6,8 +6,10 @@ use App\Cart;
 use App\Coupon;
 use App\PostalCode;
 use App\ProductAttribute;
+use App\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -36,74 +38,123 @@ class CartController extends Controller
 
         $data = $request->all();
 
-        // we need to setup session for gauest user
-        $session_id = Session::get('session_id');
-        if (empty($session_id))
-        {
-            $session_id = Str::random(40);
-            Session::put('session_id',$session_id);
-        }
-
         // first we need to separate id and size
         if (!empty($data['productSize'])){
             $data['size'] = explode($data['product_id'].'-',$data['productSize']);
         }
 
-        // we can check this product quantity is available or not
-        $producrCheck = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size'][1]])->first();
-        if ($producrCheck->stock < $request->quantity)
+        if (!empty($request->wishlist) && $request->wishlist === 'Wishlist')
         {
-            return redirect()->back()->with('error', 'Required Quantity is not available!');
-        }
+            // check auth user is login or not
+            if (!Auth::check())
+            {
+                return redirect()->back()->with('warning', 'Your are not login');
+            }
 
-        // now we can check this product alredy in user cart or not
-        if (auth()->check()){
-            // ckack the product already exist using session
-            $checkCart = Cart::where([
+           // need size wise price
+            $ProductAttr = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size'][1]])->first();
+
+            // auth user email
+            $email = Auth::user()->email;
+
+            // set quantity
+            $quantity = 1;
+
+            // check alredy exist or not
+            $checkCart = Wishlist::where([
                 'product_id' => $data['product_id'],
                 'color' => $data['color'],
                 'size' => $data['size'][1],
-                'user_email' => auth()->user()->email,
+                'user_email' => $email,
             ])->count();
 
-        }else{
-            $checkCart = Cart::where([
+            if ($checkCart > 0)
+            {
+                return redirect()->back()->with('error', 'Product Alredy Exist in you wishlist');
+            }
+
+            // now insert to wishlist
+            Wishlist::create([
                 'product_id' => $data['product_id'],
+                'product_name' => $data['product_name'],
+                'product_sku_code' => $ProductAttr->sku,
+                'price' => $ProductAttr->price,
                 'color' => $data['color'],
                 'size' => $data['size'][1],
+                'quantity' =>$quantity,
+                'user_email' => $email,
+            ]);
+
+            return redirect()->back()->with('success', 'Product add to wishlist success !');
+        }else{
+
+            // we need to setup session for gauest user
+            $session_id = Session::get('session_id');
+            if (empty($session_id))
+            {
+                $session_id = Str::random(40);
+                Session::put('session_id',$session_id);
+            }
+
+            // we can check this product quantity is available or not
+            $producrCheck = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size'][1]])->first();
+            if ($producrCheck->stock < $request->quantity)
+            {
+                return redirect()->back()->with('error', 'Required Quantity is not available!');
+            }
+
+            // now we can check this product alredy in user cart or not
+            if (auth()->check()){
+                // ckack the product already exist using session
+                $checkCart = Cart::where([
+                    'product_id' => $data['product_id'],
+                    'color' => $data['color'],
+                    'size' => $data['size'][1],
+                    'user_email' => auth()->user()->email,
+                ])->count();
+
+            }else{
+                $checkCart = Cart::where([
+                    'product_id' => $data['product_id'],
+                    'color' => $data['color'],
+                    'size' => $data['size'][1],
+                    'session_id' => $session_id,
+                ])->count();
+            }
+
+            if ($checkCart){
+                return redirect()->back()->with('error', 'Product Alredy Exist in you cart');
+            }
+
+            if (auth()->check()){
+                $data['user_email'] = auth()->user()->email;
+            }else{
+                $data['user_email'] = '';
+            }
+
+            $productSkuCode = ProductAttribute::select('sku')->where(['product_id' => $data['product_id'], 'size' =>$data['size'][1]])->first();
+            Cart::create([
+                'product_id' => $data['product_id'],
+                'product_name' => $data['product_name'],
+                'product_sku_code' => $productSkuCode->sku,
+                'price' => $data['price'],
+                'color' => $data['color'],
+                'size' => $data['size'][1],
+                'quantity' => $data['quantity'],
+                'user_email' => $data['user_email'],
                 'session_id' => $session_id,
-            ])->count();
+            ]);
+
+            // if the user use coupon code and if add to cart item then coupon session forget
+            // we need to forget old coupon code and amount
+            Session::forget('couponAmount');
+            Session::forget('couponCode');
+
+            return redirect()->back()->with('success', 'Product add to cart success !');
         }
 
-        if ($checkCart){
-            return redirect()->back()->with('error', 'Product Alredy Exist in you cart');
-        }
+        dd($request->all());
 
-        if (auth()->check()){
-            $data['user_email'] = auth()->user()->email;
-        }else{
-            $data['user_email'] = '';
-        }
-
-        $productSkuCode = ProductAttribute::select('sku')->where(['product_id' => $data['product_id'], 'size' =>$data['size'][1]])->first();
-        Cart::create([
-            'product_id' => $data['product_id'],
-            'product_name' => $data['product_name'],
-            'product_sku_code' => $productSkuCode->sku,
-            'price' => $data['price'],
-            'color' => $data['color'],
-            'size' => $data['size'][1],
-            'quantity' => $data['quantity'],
-            'user_email' => $data['user_email'],
-            'session_id' => $session_id,
-        ]);
-
-        // if the user use coupon code and if add to cart item then coupon session forget
-        // we need to forget old coupon code and amount
-        Session::forget('couponAmount');
-        Session::forget('couponCode');
-
-        return redirect()->back()->with('success', 'Product add to cart success !');
     }
 
 

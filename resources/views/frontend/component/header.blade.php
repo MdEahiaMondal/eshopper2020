@@ -65,7 +65,7 @@
                     <div class="shop-menu clearfix pull-right">
                         <ul class="nav navbar-nav">
                             <li><a href=""><i class="fa fa-user"></i> Account</a></li>
-                            <li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
+                            <li><a href="{{ route('wishlist.index') }}"><i class="fa fa-star"></i> Wishlist</a></li>
                             <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                             <li><a href="{{ route('cart.index') }}"><i class="fa fa-shopping-cart"></i> Cart <sup class="text-danger">{{ $cart->count() }}</sup></a></li>
 
@@ -75,7 +75,6 @@
                                 @else
                                 <li><a href="{{ route('login.register') }}"><i class="fa fa-lock"></i> Login</a></li>
                             @endif
-
                         </ul>
                     </div>
                 </div>

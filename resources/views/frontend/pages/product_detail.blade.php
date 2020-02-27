@@ -70,11 +70,11 @@
 									<label>Quantity:</label>
 									<input type="number" name="quantity" value="1" />
                                     @if($product_stock > 0)
-                                            <button type="submit" id="addToCart" class="btn btn-fefault cart">
+                                      <button type="submit" id="addToCart" name="cart" value="cart" class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
 										Add to cart
 									    </button>
-                                        @endif
+                                     @endif
 								    </span>
 
                                     @php
@@ -86,6 +86,12 @@
                                         <h2> EUR: {{ $getCurrancyRate['eurRate']  }} </h2>
                                         <h2> INR: {{ $getCurrancyRate['inrRate']  }} </h2>
                                     </div>
+
+                                    <button type="submit" name="wishlist" id="addToCart" value="Wishlist" class="btn btn-fefault cart">
+                                        <i class="fa fa-briefcase"></i>
+                                       Add to  Wishlist
+                                    </button>
+
 
                                     <p><b>Availability:</b> <span id="outOfStock">@if($product_stock > 0) <label style="color: green">In Stock</label> @else <label style="color: red"> Out of Stock</label>  @endif</span> </p>
                                     <p><b>Condition:</b> New</p>
