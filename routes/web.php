@@ -59,6 +59,7 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
     Route::post('order/status','OrderController@orderStatusUpdate')->name('order.status.update');
     Route::get('order/{order}/invoice','OrderController@orderInvoice')->name('order.invoice');
     Route::get('order/{order}/pdf/invoice','OrderController@orderPdfInvoice')->name('order.pdf.invoice');
+    Route::get('orders/chart-show', 'OrderController@orderChartList')->name('order.chart.list');
 
     // cms pages
     Route::resource('cms_page','CmsPageController');

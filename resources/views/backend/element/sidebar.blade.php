@@ -47,10 +47,7 @@
                 @if($adminDeatil->coupon_access == 1)
                     <a class="{{ preg_match("/coupon/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.coupon.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Coupons</span></a>
                 @endif
-                    <a class="{{ preg_match("/banner/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.banner.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Banners</span></a>
-                @if($adminDeatil->order_access == 1)
-                    <a class="{{ preg_match("/order/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.order.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Order</span></a>
-                @endif
+                <a class="{{ preg_match("/banner/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.banner.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Banners</span></a>
                 <a class="{{ preg_match("/cms_page/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.cms_page.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Cms Page</span></a>
                 <a class="{{ preg_match("/currencie/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.currencie.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Currency</span></a>
                 <a class="{{ preg_match("/shipping_charge/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.shipping_charge.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Shipping Charge</span></a>
@@ -63,6 +60,16 @@
                 <ul class="nav nav-second-level collapse">
                     <li><a href="{{ route('admin.user.index') }}">All Users</a></li>
                     <li><a href="{{ route('admin.user.chart.list') }}">Users Charts</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#0"><i class="fa fa-th-large"></i> <span class="nav-label">Order</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    @if($adminDeatil->order_access == 1)
+                        <li><a class="{{ preg_match("/order/i",$url) ? 'sidebar_active' : '' }}" href="{{ route('admin.order.index') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Order</span></a></li>
+                    @endif
+                    <li><a href="{{ route('admin.order.chart.list') }}">Order Charts</a></li>
                 </ul>
             </li>
 

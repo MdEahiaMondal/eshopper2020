@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Order;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class OrderController extends Controller
 {
@@ -116,6 +117,14 @@ class OrderController extends Controller
     {
         $pdf = PDF::loadView('backend.orders.invoice', compact('order'));
         return $pdf->download('invoice.pdf');
+    }
+
+    public function orderChartList()
+    {
+        $current_month_order = Order::whereMonth('created_at', Carbon::now()->month)->count();
+        $last_month_order = Order::whereMonth('created_at', Carbon::now()->subMonth(1))->count();
+        $last_to_last_month_order = Order::whereMonth('created_at', Carbon::now()->subMonth(2))->count();
+        return view('backend.orders.order-charts', compact('current_month_order', 'last_month_order', 'last_to_last_month_order'));
     }
 
 
