@@ -39,7 +39,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="invoice-title">
-                <h2>Invoice</h2><h3 class="pull-right">Order # 12345</h3>
+                <h2>Invoice</h2><h3 class="pull-right">Order # <?php echo DNS1D::getBarcodeHTML($order->id, "C39");  ?> </h3>
             </div>
             <hr>
             <div class="row" style="overflow: hidden">
@@ -95,6 +95,7 @@
                             <thead>
                             <tr>
                                 <th >Name</th>
+                                <th >Barcode</th>
                                 <th >Size</th>
                                 <th >Color </th>
                                 <th >Price</th>
@@ -109,6 +110,7 @@
                             @foreach($order->orderDetails as $product)
                                 <tr>
                                     <td>{{ $product->product_name }}</td>
+                                    <td>@php echo DNS1D::getBarcodeHTML($product->product_name, "C39")  @endphp</td>
                                     <td>{{ $product->product_size }}</td>
                                     <td>{{ $product->product_color }}</td>
                                     <td>{{ $product->product_price }}</td>
