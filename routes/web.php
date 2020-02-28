@@ -24,6 +24,7 @@ Route::group([ 'as' => 'admin.',  'namespace' => 'Backend', 'prefix' => 'admin',
     // user section controller
     Route::resource('user', 'UserController');
     Route::get('users/chart-show', 'UserController@UserListChart')->name('user.chart.list');
+    Route::get('users/country-wise', 'UserController@countryWiseUserToCharts')->name('user.country.wise.chart.list');
 
 
     // admin section controller

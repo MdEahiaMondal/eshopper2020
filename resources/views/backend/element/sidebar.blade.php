@@ -60,6 +60,7 @@
                 <ul class="nav nav-second-level collapse">
                     <li><a href="{{ route('admin.user.index') }}">All Users</a></li>
                     <li><a href="{{ route('admin.user.chart.list') }}">Users Charts</a></li>
+                    <li><a href="{{ route('admin.user.country.wise.chart.list') }}">Country Wise users charts</a></li>
                 </ul>
             </li>
 

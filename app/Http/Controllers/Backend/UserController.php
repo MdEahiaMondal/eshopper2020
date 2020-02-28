@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -30,6 +31,14 @@ class UserController extends Controller
 
         return view('backend.users.user-charts', compact('current_month_users', 'last_month_users', 'last_to_last_Month_users'));
     }
+
+
+    public function countryWiseUserToCharts()
+    {
+        $users = User::select('country', DB::raw('count(country) as count'))->groupBy('country')->get();
+       return view('backend.users.country_wise_user-charts', compact('users'));
+    }
+
 
     /**
      * Show the form for creating a new resource.
